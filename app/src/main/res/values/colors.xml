@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2f4050</color>
+    <color name="colorPrimaryDark">#2f4050</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="layout_top_no">#009966</color>
+    <color name="layout_top_no_p">#999999</color>
+
+    <color name="body_hui">#f3f3f4</color>
+    <color name="body_bai">#ffffff</color>
+
+    <color name="layout_top_no_c_textview">#ffffff</color>
+    <color name="main_kc_tab_bg">#f6f6f6</color>
+    <color name="main_kc_tab_text">#000000</color>
+    <color name="main_kc_tab_bg_yw">#99CCFF</color>
+
+    <color name="line">#ffd3dde6</color>
+    <color name="item_title">#0066CC</color>
+    <color name="item_bg">#ffc0c0c0</color>
+    <color name="item_intro">#000000</color>
+    <color name="reday_bg">#f1e5c9</color>
+    <color name="title_coler_black">#000000</color><!-- 文字颜色 -->
+    <color name="title_top">#2f4050</color><!-- 导航背景颜色 -->
+    <color name="lightgrey">#ffd3d3d3</color>
+    <color name="content_message">#666666</color>
+    <color name="text_coler_black">#676a6c</color><!-- 文字颜色 -->
+
+    <color name="text_coler_01">#FF9966</color><!-- 文字颜色 -->
+</resources>

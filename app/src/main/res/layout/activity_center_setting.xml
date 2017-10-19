@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/body_hui"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:id="@+id/update_soft"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/children_list_press_n"
+        android:clickable="true" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
+            android:text="@string/update_soft"
+            android:textColor="@color/text_coler_black"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+
+    <!--<RelativeLayout-->
+        <!--android:id="@id/function_intro"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_marginTop="1dp"-->
+        <!--android:background="@drawable/children_list_press_n"-->
+        <!--android:clickable="true" >-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginStart="10dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="@string/function_intro"-->
+            <!--android:textColor="@color/text_coler_black"-->
+            <!--android:textSize="16sp" />-->
+    <!--</RelativeLayout>-->
+
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/aboutme"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_marginTop="1dp"-->
+        <!--android:background="@drawable/children_list_press_n"-->
+        <!--android:clickable="true" >-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginStart="10dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="@string/aboutme"-->
+            <!--android:textColor="@color/text_coler_black"-->
+            <!--android:textSize="16sp" />-->
+    <!--</RelativeLayout>-->
+
+</LinearLayout>

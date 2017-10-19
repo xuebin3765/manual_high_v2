@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/body_bai"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/body_bai">
+
+        <LinearLayout
+            android:id="@id/content_main_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="30dp"
+            android:paddingBottom="80dp" >
+
+            <TextView
+                android:id="@+id/detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/item_title"
+                android:textSize="@dimen/parent_size" />
+
+            <TextView
+                android:id="@+id/detail_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0px"
+                android:layout_marginTop="0px"
+                android:drawablePadding="0dp"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="8dp"
+                android:padding="0px"
+                android:textColor="@color/title_coler_black"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout 
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/reday_bg"
+        android:orientation="horizontal">
+        <Button 
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/back"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/crm_back"
+            android:textColor="@color/body_bai"
+            android:text="@string/back"/>
+        <Button 
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/next"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/crm_back"
+            android:textColor="@color/body_bai"
+            android:text="@string/next"/>
+    </LinearLayout>
+
+</RelativeLayout>

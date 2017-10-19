@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="layout_top_no_r_image">false</item>
+    <item type="id" name="layout_top_no_c_textview">false</item>
+    
+    <item type="id" name="layout_home_tab_gridview_yw">false</item>
+    <item type="id" name="layout_home_tab_gridview_yy">false</item>
+    <item type="id" name="layout_home_tab_gridview_sx">false</item>
+    <item type="id" name="layout_home_tab_gridview_wl">false</item>
+    <item type="id" name="layout_home_tab_gridview_hx">false</item>
+    <item type="id" name="layout_home_tab_gridview_sw">false</item>
+    <item type="id" name="layout_home_tab_gridview_dl">false</item>
+    <item type="id" name="layout_home_tab_gridview_zz">false</item>
+    <item type="id" name="layout_home_tab_gridview_ls">false</item>
+    
+    <item type="id" name="layout_home_tab_gridview_l_title_yw">false</item>
+    <item type="id" name="layout_home_tab_gridview_l_title_yy">false</item>
+    <item type="id" name="layout_home_tab_gridview_l_title_sx">false</item>
+    <item type="id" name="layout_home_tab_gridview_l_title_wl">false</item>
+    <item type="id" name="layout_home_tab_gridview_l_title_hx">false</item>
+    <item type="id" name="layout_home_tab_gridview_l_title_sw">false</item>
+    <item type="id" name="layout_home_tab_gridview_l_title_dl">false</item>
+    <item type="id" name="layout_home_tab_gridview_l_title_zz">false</item>
+    <item type="id" name="layout_home_tab_gridview_l_title_ls">false</item>
+    
+    <item type="id" name="layout_home_tab_gridview_r_tc_yw">false</item>
+    <item type="id" name="layout_home_tab_gridview_r_tc_yy">false</item>
+    <item type="id" name="layout_home_tab_gridview_r_tc_sx">false</item>
+    <item type="id" name="layout_home_tab_gridview_r_tc_wl">false</item>
+    <item type="id" name="layout_home_tab_gridview_r_tc_hx">false</item>
+    <item type="id" name="layout_home_tab_gridview_r_tc_sw">false</item>
+    <item type="id" name="layout_home_tab_gridview_r_tc_dl">false</item>
+    <item type="id" name="layout_home_tab_gridview_r_tc_zz">false</item>
+    <item type="id" name="layout_home_tab_gridview_r_tc_ls">false</item>
+    
+    <item type="id" name="child_item_title">false</item>
+    <item type="id" name="child_item_title_vip">false</item>
+    <item type="id" name="child_item_intro">false</item>
+    <item type="id" name="content_main_detail">false</item>
+    <item type="id" name="top_title">false</item>
+    <item type="id" name="id_top_center_back_lin">false</item>
+    <item type="id" name="id_top_center_title">false</item>
+    <item type="id" name="top_menu_favority">false</item>
+    <item type="id" name="expandablelistview">false</item>
+    <item type="id" name="my_login">false</item>
+    <item type="id" name="my_login_title">false</item>
+    <item type="id" name="my_login_text">false</item>
+    <item type="id" name="my_share">false</item>
+    <item type="id" name="my_comment">false</item>
+    <item type="id" name="my_fankui">false</item>
+    <item type="id" name="login_btn_login">false</item>
+    
+    <item type="id" name="email">false</item>
+    <item type="id" name="pwd">false</item>
+    <item type="id" name="re_pwd">false</item>
+    <item type="id" name="register_btn_sure">false</item>
+    <item type="id" name="forget_btn_sure">false</item>
+    
+    <item type="id" name="resetpwd_edit_pwd_old">false</item>
+    <item type="id" name="resetpwd_edit_pwd_new">false</item>
+    <item type="id" name="resetpwd_edit_pwd_check">false</item>
+    <item type="id" name="resetpwd_btn_sure">false</item>
+    <item type="id" name="my_update_pwd">false</item>
+    <item type="id" name="my_logout">false</item>
+    <item type="id" name="my_about_me">false</item>
+    
+    <item type="id" name="user_status">false</item>
+    <item type="id" name="user_account">false</item>
+    <item type="id" name="zfb">false</item>
+    <item type="id" name="wx">false</item>
+    
+    <item type="id" name="home_ly">false</item>
+    
+    <item type="id" name="layout_gird_item_girdview">false</item>
+    <item type="id" name="layout_gird_item_text_l">false</item>
+    <item type="id" name="layout_gird_item_text_r">false</item>
+    <item type="id" name="app_logo">false</item>
+    <item type="id" name="layout_gird_item_text_scj">false</item>
+    <item type="id" name="layout_gird_item_text_tiku">false</item>
+    <item type="id" name="layout_gird_item_text_video">false</item>
+
+    <item type="id" name="fg3_tool">false</item>
+    <item type="id" name="fg3_tool_01">false</item>
+    <item type="id" name="fg3_tool_02">false</item>
+    <item type="id" name="fg3_tool_03">false</item>
+    <item type="id" name="fg3_tool_04">false</item>
+
+    <item type="id" name="fg3_tool_text_01">false</item>
+    <item type="id" name="fg3_tool_text_02">false</item>
+    <item type="id" name="fg3_tool_text_03">false</item>
+    <item type="id" name="fg3_tool_text_04">false</item>
+
+    <item type="id" name="fg3_tool_img_01">false</item>
+    <item type="id" name="fg3_tool_img_02">false</item>
+    <item type="id" name="fg3_tool_img_03">false</item>
+    <item type="id" name="fg3_tool_img_04">false</item>
+
+    <item type="id" name="fg3_linear_news">false</item>
+
+    <item type="id" name="fg3_linear_bk">false</item>
+
+    <item type="id" name="fg3_linear_st">false</item>
+
+    <item type="id" name="iv_home_user">false</item>
+    <item type="id" name="title_to_center_text">false</item>
+    <item type="id" name="iv_home_setting">false</item>
+
+    <item type="id" name="iv_home_favorite">false</item>
+
+    <item type="id" name="activity_item_lin_zsd">false</item>
+    <item type="id" name="activity_item_lin_tiku">false</item>
+
+</resources>

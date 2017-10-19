@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/body_bai"
+    android:orientation="vertical">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/body_hui"
+            android:orientation="vertical" >
+            <android.support.v4.view.ViewPager
+                android:id="@+id/fg3_viewpager"
+                android:layout_width="match_parent"
+                android:background="@drawable/banner_bg"
+                android:layout_height="180dp">
+            </android.support.v4.view.ViewPager>
+
+            <RelativeLayout
+                android:layout_alignBaseline="@id/fg3_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:layout_marginTop="150dp"
+                android:background="#33000000">
+                <TextView
+                    android:id="@+id/fg3_tv_intro"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/body_bai"
+                    android:textSize="12sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    />
+                <LinearLayout
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/fg3_dot_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_horizontal">
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_below="@id/fg3_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/body_hui"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@id/fg3_tool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/body_bai"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:padding="8dp">
+                    <LinearLayout
+                        android:id="@id/fg3_tool_01"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1.0"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="visible" >
+
+                        <ImageView
+                            android:id="@id/fg3_tool_img_01"
+                            android:layout_width="@dimen/fg3_tool_img_w_h"
+                            android:layout_height="@dimen/fg3_tool_img_w_h"
+                            android:layout_marginBottom="@dimen/fg3_tool_img_marginBottom"
+                            android:contentDescription="@string/app_name" />
+
+                        <TextView
+                            android:id="@id/fg3_tool_text_01"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="@dimen/main_text_size"
+                            android:text="工具1"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/fg3_tool_02"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="2.0dip"
+                        android:layout_marginStart="2.0dip"
+                        android:layout_weight="1.0"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="visible" >
+
+                        <ImageView
+                            android:id="@id/fg3_tool_img_02"
+                            android:layout_width="@dimen/fg3_tool_img_w_h"
+                            android:layout_height="@dimen/fg3_tool_img_w_h"
+                            android:layout_marginBottom="@dimen/fg3_tool_img_marginBottom"
+                            android:contentDescription="@string/app_name"
+                            />
+
+                        <TextView
+                            android:id="@id/fg3_tool_text_02"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:text="工具2"
+                            android:textSize="@dimen/main_text_size" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@id/fg3_tool_03"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1.0"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="visible" >
+
+                        <ImageView
+                            android:id="@id/fg3_tool_img_03"
+                            android:layout_width="@dimen/fg3_tool_img_w_h"
+                            android:layout_height="@dimen/fg3_tool_img_w_h"
+                            android:layout_marginBottom="10dp"
+                            app:srcCompat="@drawable/fg3_tool_img_collect"
+                            android:contentDescription="@string/app_name" />
+
+                        <TextView
+                            android:id="@id/fg3_tool_text_03"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:text="收藏"
+                            android:textSize="@dimen/main_text_size" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@id/fg3_tool_04"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="2.0dip"
+                        android:layout_marginStart="2.0dip"
+                        android:layout_weight="1.0"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="visible" >
+
+                        <ImageView
+                            android:id="@id/fg3_tool_img_04"
+                            android:layout_width="@dimen/fg3_tool_img_w_h"
+                            android:layout_height="@dimen/fg3_tool_img_w_h"
+                            android:layout_marginBottom="@dimen/fg3_tool_img_marginBottom"
+                            app:srcCompat="@drawable/fg3_tool_img_games_24dp"
+                            android:contentDescription="@string/app_name"
+                            />
+
+                        <TextView
+                            android:id="@id/fg3_tool_text_04"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:text="娱乐"
+                            android:textSize="@dimen/main_text_size" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/body_hui"
+                    android:padding="10dp"
+                    android:text="@string/inform"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/body_bai"
+                    android:padding="10dp"
+                    android:visibility="gone"
+                    android:text="最新资讯"/>
+
+                <LinearLayout
+                    android:id="@id/fg3_linear_news"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/body_bai"
+                    android:padding="10dp"
+                    android:text="终极备考"/>
+                <LinearLayout
+                    android:id="@id/fg3_linear_bk"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/body_bai"
+                    android:padding="10dp"
+                    android:visibility="gone"
+                    android:text="热门试题"/>
+
+                <LinearLayout
+                    android:id="@id/fg3_linear_st"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

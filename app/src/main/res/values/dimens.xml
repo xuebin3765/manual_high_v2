@@ -1,0 +1,24 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    
+    <dimen name="layout_top_no_c_textview">22dp</dimen>
+    <dimen name="main_kc_tab_text">15dp</dimen>
+    
+    <dimen name="image_gridview_width">100dp</dimen>
+    <dimen name="image_gridview_height">100dp</dimen>
+    <dimen name="image_gridview_gap">2dp</dimen>
+    
+    <dimen name="parent_size">20sp</dimen>
+    <dimen name="child_item_title">18.0sp</dimen>
+    <dimen name="child_item_intro">14.0sp</dimen>
+    <dimen name="button_size_small">16sp</dimen>
+    <dimen name="button_size">20sp</dimen>
+
+    <dimen name="fg3_tool_img_w_h">50dp</dimen>
+    <dimen name="fg3_tool_img_marginBottom">8dp</dimen>
+    <dimen name="main_text_size">14sp</dimen>
+
+</resources>
