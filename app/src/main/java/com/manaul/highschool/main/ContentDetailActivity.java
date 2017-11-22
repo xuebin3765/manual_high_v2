@@ -13,6 +13,7 @@ import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -34,8 +35,11 @@ import com.manaul.highschool.view.MessageSpan;
 import com.manaul.highschool.view.TextViewFormHtmlUtil;
 import com.umeng.analytics.MobclickAgent;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import cn.bmob.v3.BmobUser;
 
@@ -165,8 +169,6 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 		next = (Button) findViewById(R.id.next);
 		back.setOnClickListener(this);
 		next.setOnClickListener(this);
-		// // 初始化图片加载类
-		// initImageLoader(mContext);
 		// 展示数据
 		showData(itemContent);
 
@@ -182,23 +184,22 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 		new TextViewFormHtmlUtil(itemCon.getTitle(), title, mContext).execute();
 		new TextViewFormHtmlUtil(itemCon.getContext(), content, mContext).execute();
 
-		ArrayList<String> imageUrlList = DataUtil.getImageSrc(itemCon.getContext());
+		List<String> imageUrlList = DataUtil.getImageSrc(itemCon.getContext());
 
-		StringBuffer images = new StringBuffer();
 		if (imageUrlList != null && imageUrlList.size() > 0) {
 			for (String string : imageUrlList) {
-				if (!string.contains("ueditor"))
-					images.append(string + "&&");
+				if(string.contains("ueditor"))
+					imageUrlList.remove(string);
 			}
 		}
-
 		Editor editor = shareConfig.edit();
-		editor.putString("images", images.toString());
+		editor.putString("images", StringUtils.join(imageUrlList , "&&"));
 		editor.commit();
 
 		mHandler = new Handler() {
 			public void handleMessage(Message msg) {
 				int what = msg.what;
+				Log.i("222" , msg.toString());
 				if (what == 200) {
 					MessageSpan ms = (MessageSpan) msg.obj;
 					Object[] spans = (Object[]) ms.getObj();

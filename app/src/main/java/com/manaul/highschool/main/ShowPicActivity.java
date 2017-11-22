@@ -21,18 +21,21 @@ import android.widget.TextView;
 import com.manaul.highschool.adapter.ImagePagerAdapter;
 import com.manaul.highschool.loader.AsyncImageLoader;
 import com.manaul.highschool.utils.Constant;
+import com.manaul.highschool.utils.DataUtil;
 import com.manaul.highschool.utils.SharedConfig;
 import com.manaul.highschool.view.ZoomImageView;
 import com.umeng.analytics.MobclickAgent;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @SuppressLint("InlinedApi")
 public class ShowPicActivity extends AppCompatActivity {
 
-	int dwidth;
-	int dheight;
 	private Context mContext;
 	private ViewPager mViewPager;
 	private List<ImageView> imageViewList = new ArrayList<ImageView>();
@@ -51,25 +54,25 @@ public class ShowPicActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_show_pic);
 		mContext = this;
 		shareConfig = new SharedConfig(mContext).getConfig();
-		
-		
+
+		String images = shareConfig.getString("images" , null);
+
 		ArrayList<String> imgUrlArray = new ArrayList<String>();
-		String images = shareConfig.getString("images", null);
-		
-		images.substring(0, images.length() - 2);
-		String urlImg[] = images.split("&&");
-		if(urlImg != null && urlImg.length > 0){
-			for (String string : urlImg) {
-				if(string != null && string.length() > 0){
-					imgUrlArray.add(string);
+		if(images !=null && images.length() > 0){
+			String urlImg[] = StringUtils.split(images , "&&");
+			if( urlImg.length > 0){
+				for (String string : urlImg) {
+					if(string != null && string.length() > 0){
+						imgUrlArray.add(string);
+					}
 				}
 			}
 		}
-		
-		// 获得图片路径，处理路�??
+
+		// 获得图片路径，处理路径
 		Bundle bundle = getIntent().getExtras();
 		String imgUrl = bundle.getString("imgUrl");
-		// 当前的位�??
+		// 当前的位置
 		presentImage = imgUrlArray.indexOf("/"+imgUrl);
 		// 顶部返回按钮
 		ActionBar mActionbar = getSupportActionBar();
@@ -94,30 +97,18 @@ public class ShowPicActivity extends AppCompatActivity {
 		// 顶部标题设置
 		tvTitle.setText(" \t" + (presentImage + 1) + " / " + imgUrlArray.size());
 		
-		if(imgUrlArray != null && imgUrlArray.size() > 0){
+		if( imgUrlArray.size() > 0){
 			for (String url : imgUrlArray) {
-//				if(url.startsWith("/")){
-//					url = url.substring(1);
-//				}
-//				Bitmap bitmap = DataUtil.getImageFromAssetsFile(mContext, url);
-//				if(bitmap != null){
-//					ZoomImageView imageView = new ZoomImageView(mContext);
-//					imageView.setImageBitmap(bitmap);
-//					imageViewList.add(imageView);
-//				}
-				
-				// --------------------------- 
-				//网络图片地址  
-				url = Constant.HOST_IMG + url.substring(1);
-		        AsyncImageLoader loader = new AsyncImageLoader(mContext);
-		        loader.setCache2File(true); //false  
-		        loader.setCachedDir(mContext.getCacheDir().getAbsolutePath());  
-		        //下载图片，第二个参数是否缓存至内存中
-		        loader.downloadImage(url, true/*false*/, new AsyncImageLoader.ImageCallback() {  
-		            @Override  
-		            public void onImageLoaded(Bitmap bitmap, String imageUrl) {  
-		            	ZoomImageView imageView = new ZoomImageView(mContext);
-		            	if (bitmap != null) {
+				//网络图片地址
+				AsyncImageLoader loader = new AsyncImageLoader(mContext);
+				loader.setCache2File(true); //false
+				loader.setCachedDir(mContext.getCacheDir().getAbsolutePath());
+				//下载图片，第二个参数是否缓存至内存中
+				loader.downloadImage(Constant.HOST_IMG+url, true/*false*/, new AsyncImageLoader.ImageCallback() {
+					@Override
+					public void onImageLoaded(Bitmap bitmap, String imageUrl) {
+						ZoomImageView imageView = new ZoomImageView(mContext);
+						if (bitmap != null) {
 							imageView.setImageBitmap(bitmap);
 						}else {
 							// 下载失败，设置默认图片
@@ -126,8 +117,8 @@ public class ShowPicActivity extends AppCompatActivity {
 							imageView.setImageBitmap(bitmap);
 						}
 						imageViewList.add(imageView);
-		            }  
-		        });
+					}
+				});
 			}
 		}
 		

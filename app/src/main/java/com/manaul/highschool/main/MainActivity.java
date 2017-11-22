@@ -12,47 +12,51 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.manaul.highschool.bean.Banner;
 import com.manaul.highschool.loader.AsyncImageLoader;
 import com.manaul.highschool.loader.UrlDrawable;
 import com.manaul.highschool.utils.Constant;
+import com.manaul.highschool.utils.LoggerUtil;
 import com.manaul.highschool.utils.SharedConfig;
+import com.manaul.highschool.utils.SharedPreferenceUtil;
 import com.manaul.highschool.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import c.b.BP;
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 @SuppressLint("HandlerLeak")
 public class MainActivity extends Activity {
 	
 	private String versionName;
     private Context mContext;
-    private SharedPreferences shared;
     private int count = 5;
 
     private ImageView welcome_kp_image;
     private TextView welcome_kp_text;
-    
-    String adUrl = null;
-	
+    List<Banner> startBannerList = new ArrayList<>();
+
 	@SuppressWarnings("unused")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mContext = this;
 		setContentView(R.layout.welcome);
-
-        shared = new SharedConfig(mContext).getConfig();
-
+		versionName = SharedPreferenceUtil.getInstance(mContext).getByStringKey("versionName");
         // 复制数据库
-        versionName = shared.getString("versionName", null);
         if (Constant.IS_TEST || versionName == null || !Constant.getVersionName(mContext).equals(versionName)) {
-            boolean copyData = SharedConfig.copyFileFromAssets(mContext);
+            boolean copyData = SharedPreferenceUtil.getInstance(mContext).copyFileFromAssets(mContext);
             if (copyData) {
-                SharedPreferences.Editor editor = shared.edit();
-                editor.putString("versionName", Constant.getVersionName(mContext));
-                editor.putInt("versionCode", Constant.getVersionCode(mContext));
-                editor.commit();
+				SharedPreferenceUtil.getInstance(mContext).setByStringKey("versionName", Constant.getVersionName(mContext));
+				SharedPreferenceUtil.getInstance(mContext).setIntByKey("versionCode", Constant.getVersionCode(mContext));
             }
         }
         
@@ -60,31 +64,48 @@ public class MainActivity extends Activity {
 		Bmob.initialize(mContext, Constant.BMOB_APKID);
 		BP.init(Constant.BMOB_APKID); // 支付初始化
 
-		adUrl = shared.getString("ad", null);
-		
+		// 初始化数据
+		final String startBanners = SharedPreferenceUtil.getInstance(mContext).getByStringKey("startBanners");
+		LoggerUtil.showLog(startBanners);
+		if(startBannerList.size() <= 0){
+			if(startBanners != null){
+				// 从 本地缓存中获取
+				JSONArray jsonArray = JSON.parseArray(startBanners);
+				if(jsonArray != null && jsonArray.size() > 0){
+					for(int i = 0 ; i < jsonArray.size() ; i++ )
+						startBannerList.add(JSON.toJavaObject(jsonArray.getJSONObject(i), Banner.class));
+
+				}
+			}else {
+				cacheBannerHomePic();
+			}
+		}
+
+
 		// 初始化控件对象
-        welcome_kp_image = (ImageView) findViewById(R.id.welcome_kp_image);
-        welcome_kp_text = (TextView) findViewById(R.id.welcome_kp_text);
-        welcome_kp_text.setText(count+"");
-        
-        // 网络获取图片
+		welcome_kp_image = (ImageView) findViewById(R.id.welcome_kp_image);
+		welcome_kp_text = (TextView) findViewById(R.id.welcome_kp_text);
+		welcome_kp_text.setText(count+"");
+
+		// 网络获取图片
 		// ----------------------------------------------
 //        adUrl = "http://img06.tooopen.com/images/20170511/tooopen_sy_209123771256.jpg";
-        if(adUrl != null){
-        	final UrlDrawable urlDrawable = new UrlDrawable();
-    		AsyncImageLoader loader = new AsyncImageLoader(mContext);
-    		loader.setCache2File(true); // false
-    		loader.setCachedDir(mContext.getCacheDir().getAbsolutePath());
-    		loader.downloadImage(adUrl, true/* false */, new AsyncImageLoader.ImageCallback() {
-    			@Override
-    			public void onImageLoaded(Bitmap bitmap, String imageUrl) {
-				if (bitmap != null) {
-					welcome_kp_image.setImageBitmap(bitmap);
-				}
-    			}
-    		});
-        }
-        
+		if(startBannerList != null && startBannerList.size() > 0){
+			if(startBannerList.size() == 1 && startBannerList.get(0).getImageUtl() != null){
+				final UrlDrawable urlDrawable = new UrlDrawable();
+				AsyncImageLoader loader = new AsyncImageLoader(mContext);
+				loader.setCache2File(true); // false
+				loader.setCachedDir(mContext.getCacheDir().getAbsolutePath());
+				loader.downloadImage(startBannerList.get(0).getImageUtl(), true/* false */, new AsyncImageLoader.ImageCallback() {
+					@Override
+					public void onImageLoaded(Bitmap bitmap, String imageUrl) {
+						if (bitmap != null) {
+							welcome_kp_image.setImageBitmap(bitmap);
+						}
+					}
+				});
+			}
+		}
         handler.sendEmptyMessageDelayed(0, 1000);
         welcome_kp_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +152,28 @@ public class MainActivity extends Activity {
 	public void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
+	}
+
+	/**
+	 * 缓存banner图
+	 */
+	public void cacheBannerHomePic(){
+		BmobQuery<Banner> query = new BmobQuery<Banner>();
+		query.order("-sort");
+		query.addWhereEqualTo("appId" , Constant.APP_ID);
+		query.addWhereEqualTo("type" , Constant.BANNER_TYPE_START);
+		query.findObjects(new FindListener<Banner>() {
+			@Override
+			public void done(List<Banner> object, BmobException e) {
+				if(e==null){
+					String jsonObject = JSONArray.toJSONString(object);
+					SharedPreferenceUtil.getInstance(mContext).setByStringKey("startBanners" , jsonObject);
+					startBannerList = object;
+				}else{
+					LoggerUtil.showLog("cacheBannerPic 失败："+e.getMessage()+","+e.getErrorCode());
+				}
+			}
+		});
 	}
 
 }

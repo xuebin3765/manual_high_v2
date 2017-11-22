@@ -4,6 +4,7 @@ import cn.bmob.v3.BmobObject;
 
 /**
  * 描述：广告信息</br>
+ * 首页轮播图
  */
 public class ADInfo extends BmobObject{
 

@@ -10,8 +10,12 @@ import java.security.NoSuchAlgorithmException;
 
 public class Constant {
 	public static final boolean IS_TEST = false;
+	public static final boolean SHOW_LOG = true;
+	public static final int APP_ID = 1;
+	public static final int BANNER_TYPE_START = 1;
+	public static final int BANNER_TYPE_HOME = 2;
 	
-	public static final String HOST_IMG = "http://118.89.46.74:8080/manaul/";
+	public static final String HOST_IMG = "http://ovb08chzs.bkt.clouddn.com/";
 
 	public static final String APP_TYPE = "gzxxsc";
 

@@ -26,6 +26,7 @@ import com.manaul.highschool.adapter.CyclePagerAdapter;
 import com.manaul.highschool.adapter.MyGridAdapterProject;
 import com.manaul.highschool.bean.ADInfo;
 import com.manaul.highschool.bean.AdPicture;
+import com.manaul.highschool.bean.Banner;
 import com.manaul.highschool.bean.Project;
 import com.manaul.highschool.bean.UpdateApk;
 import com.manaul.highschool.bean.User;
@@ -33,12 +34,15 @@ import com.manaul.highschool.dao.NavigateDao;
 import com.manaul.highschool.dao.SQLiteHelper;
 import com.manaul.highschool.service.DownloadService;
 import com.manaul.highschool.utils.Constant;
+import com.manaul.highschool.utils.LoggerUtil;
 import com.manaul.highschool.utils.SharedConfig;
+import com.manaul.highschool.utils.SharedPreferenceUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.push.lib.util.LogUtil;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -59,7 +63,6 @@ public class NewHomeActivity extends AppCompatActivity {
     private long validateTime;
     private long validateLoginTime;
     private User user;
-    private SharedPreferences shared;
 
     private SQLiteHelper sqliteHelper;
     private SQLiteDatabase db;
@@ -74,7 +77,8 @@ public class NewHomeActivity extends AppCompatActivity {
     private LinearLayout fg3_tool_02;
     private LinearLayout fg3_tool_03;
     private LinearLayout fg3_tool_04;
-    private List<ADInfo> adInfoList = new ArrayList<>();
+
+    List<Banner> bannerHomeList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,20 +101,20 @@ public class NewHomeActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(mContext, ActivityMy.class);
-                    intent.putExtra("top_title", "个人主页");
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                Intent intent = new Intent(mContext, ActivityMy.class);
+                intent.putExtra("top_title", "个人主页");
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
                 }
             });
             mActionbar.getCustomView().findViewById(R.id.iv_home_setting).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ActivitySetting.class);
-                    intent.putExtra("top_title", "设置");
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                Intent intent = new Intent(mContext, ActivitySetting.class);
+                intent.putExtra("top_title", "设置");
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 }
             });
         }
@@ -121,48 +125,27 @@ public class NewHomeActivity extends AppCompatActivity {
         dot_layout = (LinearLayout)findViewById(R.id.fg3_dot_layout);
 //        initData();
         // 初始化数据
-        shared = new SharedConfig(mContext).getConfig();
-        final String adInfo = shared.getString("adInfo" , null);
-
-        if(adInfoList.size() <= 0){
-            if(adInfo != null){
+        final String homeBanners = SharedPreferenceUtil.getInstance(mContext).getByStringKey("homeBanners");
+        LoggerUtil.showLog(homeBanners);
+        if(bannerHomeList.size() <= 0){
+            if(homeBanners != null){
                 // 从 本地缓存中获取
-                JSONArray jsonArray = JSON.parseArray(adInfo);
+                JSONArray jsonArray = JSON.parseArray(homeBanners);
                 if(jsonArray != null && jsonArray.size() > 0){
-                    for(int i = 0 ; i < jsonArray.size() ; i++ ){
-                        adInfoList.add(JSON.toJavaObject(jsonArray.getJSONObject(i) , ADInfo.class));
-                        String jsonObject = JSONArray.toJSONString(adInfoList);
-                        Log.i("editor adInfo = " , jsonObject);
-                    }
+                    for(int i = 0 ; i < jsonArray.size() ; i++ )
+                        bannerHomeList.add(JSON.toJavaObject(jsonArray.getJSONObject(i), Banner.class));
                 }
             }else {
-                BmobQuery<ADInfo> query = new BmobQuery<ADInfo>();
-                //查询的数据
-                query.order("-sort");
-                //执行查询方法
-                query.findObjects(new FindListener<ADInfo>() {
-                    @Override
-                    public void done(List<ADInfo> object, BmobException e) {
-                        if(e==null){
-                            String jsonObject = JSONArray.toJSONString(object);
-                            adInfoList = object;
-                            Log.i("bmob adInfo = " , jsonObject);
-                            SharedPreferences.Editor editor = shared.edit();
-                            editor.putString("adInfo" , jsonObject);
-                            editor.commit();
-                        }else{
-                            Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
-                        }
-                    }
-                });
+                cacheBannerHomePic();
+
             }
         }
-        if(adInfoList != null && adInfoList.size() > 0){
+        if(bannerHomeList != null && bannerHomeList.size() > 0){
             // 初始化文字下方的圆点
             initDots();
-            viewPager.setAdapter(new CyclePagerAdapter(mContext , adInfoList));
+            viewPager.setAdapter(new CyclePagerAdapter(mContext , bannerHomeList));
             int centerValue = Integer.MAX_VALUE/2;
-            int value = centerValue % adInfoList.size();
+            int value = centerValue % bannerHomeList.size();
             //设置viewPager的第一页为最大整数的中间数，实现伪无限循环
             viewPager.setCurrentItem(centerValue-value);
             updateIntroAndDot();//更新数据与圆点
@@ -205,31 +188,26 @@ public class NewHomeActivity extends AppCompatActivity {
         fg3_tool_02 = (LinearLayout) findViewById(R.id.fg3_tool_02);
         fg3_tool_03 = (LinearLayout) findViewById(R.id.fg3_tool_03);
         fg3_tool_04 = (LinearLayout) findViewById(R.id.fg3_tool_04);
-
-
     }
 
+    /**
+     * 验证相关信息
+     * @param mContext
+     */
     private void validate(Context mContext) {
         user = BmobUser.getCurrentUser(User.class);
-
-        shared = new SharedConfig(mContext).getConfig();
-        validateTime = shared.getLong("validateTime", 0);
-        validateLoginTime = shared.getLong("validateLoginTime", 0);
-
+        validateTime = SharedPreferenceUtil.getInstance(mContext).getLongByKey("validateTime");
+        validateLoginTime = SharedPreferenceUtil.getInstance(mContext).getLongByKey("validateLoginTime");
         // 验证登陆时间 1000 * 60 * 60 * 5
         if (validateLoginTime == 0 || (System.currentTimeMillis() - validateLoginTime) > 1000 * 60 * 60 * 5) {
-            vaildateLogin(); //
-            writeSysConstants(); //
-            SharedPreferences.Editor editor = shared.edit();
-            editor.putLong("validateLoginTime", System.currentTimeMillis());
-            editor.commit();
+            validateLogin(); // 验证登录
+            cacheBannerHomePic(); // 缓存相关数据
+            SharedPreferenceUtil.getInstance(mContext).setLongByKey("validateLoginTime", System.currentTimeMillis());
         }
         // 验证登陆时间 1000 * 60 * 60 * 24
         if (validateTime == 0 || (System.currentTimeMillis() - validateTime) > 1000 * 60 * 60 * 24) {
-            checkUpdate(); //
-            SharedPreferences.Editor editor = shared.edit();
-            editor.putLong("validateTime", System.currentTimeMillis());
-            editor.commit();
+            checkUpdate(); // 检查更新
+            SharedPreferenceUtil.getInstance(mContext).setLongByKey("validateTime", System.currentTimeMillis());
         }
     }
 
@@ -238,70 +216,50 @@ public class NewHomeActivity extends AppCompatActivity {
         query.findObjects(new FindListener<UpdateApk>() {
             @Override
             public void done(List<UpdateApk> arg0, BmobException arg1) {
-
-                if (arg0 != null && arg0.size() > 0) {
-                    final UpdateApk apk = arg0.get(0);
-                    boolean update = false;
-                    if (mContext != null && apk.getVersionCode() > Constant.getVersionCode(mContext)) {
-                        update = true;
-                    } else if (mContext != null && !apk.getVersion().equals(Constant.getVersionName(mContext))) {
-                        update = true;
-                    }
-                    if (update) {
-
-                        new AlertDialog.Builder(mContext).setTitle("有新版本啦！")//
-                                .setMessage(apk.getMessage())//
-                                .setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent(mContext, DownloadService.class);
-                                        intent.putExtra("url", apk.getApkurl());
-                                        startService(intent);
-                                    }
-                                }).setNegativeButton("稍后更新", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        }).show();
-                    }
+            if (arg0 != null && arg0.size() > 0) {
+                final UpdateApk apk = arg0.get(0);
+                LoggerUtil.showLog(" Constant.getVersionCode(mContext) = "+Constant.getVersionCode(mContext));
+                if (mContext != null && apk.getVersionCode() != Constant.getVersionCode(mContext)) {
+                    new AlertDialog.Builder(mContext).setTitle("有新版本啦！")//
+                            .setMessage(apk.getMessage())//
+                            .setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(mContext, DownloadService.class);
+                                    intent.putExtra("url", apk.getApkurl());
+                                    startService(intent);
+                                }
+                            }).setNegativeButton("稍后更新", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    }).show();
                 }
+            }
             }
         });
     }
 
-    public void writeSysConstants() {
-
-        BmobQuery<ADInfo> query = new BmobQuery<ADInfo>();
-        //查询的数据
+    /**
+     * 缓存banner图
+     */
+    public void cacheBannerHomePic(){
+        BmobQuery<Banner> query = new BmobQuery<Banner>();
         query.order("-sort");
-        //执行查询方法
-        query.findObjects(new FindListener<ADInfo>() {
+        query.addWhereEqualTo("appId" , Constant.APP_ID);
+        query.addWhereEqualTo("type" , Constant.BANNER_TYPE_HOME);
+        query.findObjects(new FindListener<Banner>() {
             @Override
-            public void done(List<ADInfo> object, BmobException e) {
-            if(e==null){
-                String jsonObject = JSONArray.toJSONString(object);
-                adInfoList = object;
-                SharedPreferences.Editor editor = shared.edit();
-                editor.putString("adInfo" , jsonObject);
-                editor.commit();
-            }
-            }
-        });
-
-        BmobQuery<AdPicture> bmobQuery = new BmobQuery<AdPicture>();
-        bmobQuery.findObjects(new FindListener<AdPicture>() {
-            @Override
-            public void done(List<AdPicture> object, BmobException e) {
-                if(e==null && object != null && object.size() > 0){
-                    SharedPreferences.Editor editor = shared.edit();
-                    AdPicture ad = object.get(0);
-                    editor.putString("ad", ad.getUrl());
-                    editor.commit();
+            public void done(List<Banner> object, BmobException e) {
+                if(e==null){
+                    String jsonObject = JSONArray.toJSONString(object);
+                    SharedPreferenceUtil.getInstance(mContext).setByStringKey("homeBanners" , jsonObject);
+                    bannerHomeList = object;
+                }else{
+                    LoggerUtil.showLog("cacheBannerPic 失败："+e.getMessage()+","+e.getErrorCode());
                 }
             }
         });
-
     }
 
     //初始化监听器，当页面改变时，更新其相应数据
@@ -320,8 +278,8 @@ public class NewHomeActivity extends AppCompatActivity {
 
     //更新数据与圆点
     private void updateIntroAndDot() {
-        int currentPage = viewPager.getCurrentItem() % adInfoList.size();
-        tv_intro.setText(adInfoList.get(currentPage).getTitle());
+        int currentPage = viewPager.getCurrentItem() % bannerHomeList.size();
+        tv_intro.setText(bannerHomeList.get(currentPage).getTitle());
         for (int i = 0; i < dot_layout.getChildCount(); i++)
             dot_layout.getChildAt(i).setEnabled(i==currentPage);
 
@@ -329,7 +287,7 @@ public class NewHomeActivity extends AppCompatActivity {
 
     //初始化文字下方的圆点
     private void initDots() {
-        for (int i=0; i< adInfoList.size(); i++)
+        for (int i=0; i< bannerHomeList.size(); i++)
         {
             View view = new View(this);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(8,8);
@@ -352,7 +310,7 @@ public class NewHomeActivity extends AppCompatActivity {
         }
     };
 
-    private void vaildateLogin() {
+    private void validateLogin() {
         if (user != null) {
             BmobQuery<User> bmobQuery = new BmobQuery<User>();
             bmobQuery.getObject(user.getObjectId(), new QueryListener<User>() {
@@ -360,7 +318,7 @@ public class NewHomeActivity extends AppCompatActivity {
                 public void done(User object, BmobException e) {
                     if (e == null && object != null) {
                         if (!user.getAccessToken().equals(object.getAccessToken())) {
-                            new AlertDialog.Builder(mContext).setTitle("被迫下线")// ���öԻ������
+                            new AlertDialog.Builder(mContext).setTitle("被迫下线")
                                     .setMessage("您的账户在其他设备登陆，您已被迫下线。请重新登陆或修改密码。")// ������ʾ������
                                     .setPositiveButton("重新登陆", new DialogInterface.OnClickListener() {// ���ȷ����ť
                                         @Override
@@ -385,6 +343,10 @@ public class NewHomeActivity extends AppCompatActivity {
             } else {
                 finish();
                 System.exit(0);
+//                Intent home = new Intent(Intent.ACTION_MAIN);
+//                home.addCategory(Intent.CATEGORY_HOME);
+//                startActivity(home);
+//                LoggerUtil.showLog("回到桌面，不退出");
             }
             return true;
         }

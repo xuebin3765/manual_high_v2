@@ -13,6 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,8 +50,8 @@ public class DataUtil {
 	 * @return <img>标签 src 属�?�指向的图片地址的List集合
 	 * @author Carl He
 	 */
-	public static ArrayList<String> getImageSrc(String htmlCode) {
-		ArrayList<String> imageSrcList = new ArrayList<String>();
+	public static List<String> getImageSrc(String htmlCode) {
+		List<String> imageSrcList = new ArrayList<>();
 		Pattern p = Pattern.compile(
 				"<img\\b[^>]*\\bsrc\\b\\s*=\\s*('|\")?([^'\"\n\r\f>]+(\\.jpg|\\.bmp|\\.eps|\\.gif|\\.mif|\\.miff|\\.png|\\.tif|\\.tiff|\\.svg|\\.wmf|\\.jpe|\\.jpeg|\\.dib|\\.ico|\\.tga|\\.cut|\\.pic)\\b)[^>]*>",
 				Pattern.CASE_INSENSITIVE);
@@ -59,7 +62,6 @@ public class DataUtil {
 			quote = m.group(1);
 			src = (quote == null || quote.trim().length() == 0) ? m.group(2).split("\\s+")[0] : m.group(2);
 			imageSrcList.add(src);
-
 		}
 		return imageSrcList;
 	}

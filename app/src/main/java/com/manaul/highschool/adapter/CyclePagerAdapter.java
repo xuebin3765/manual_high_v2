@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.manaul.highschool.bean.ADInfo;
+import com.manaul.highschool.bean.Banner;
 import com.manaul.highschool.loader.AsyncImageLoader;
 import com.manaul.highschool.main.R;
 import com.manaul.highschool.utils.ToastUtils;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class CyclePagerAdapter extends PagerAdapter {
 
-    private List<ADInfo> infoList;
+    private List<Banner> infoList;
     private Context mContext;
     /**
      * 返回多少page
@@ -37,7 +38,7 @@ public class CyclePagerAdapter extends PagerAdapter {
         return view==object;
     }
 
-    public CyclePagerAdapter(Context context , List<ADInfo> adInfoList) {
+    public CyclePagerAdapter(Context context , List<Banner> adInfoList) {
         this.mContext = context;
         this.infoList = adInfoList;
     }
@@ -49,7 +50,7 @@ public class CyclePagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View view = View.inflate(mContext, R.layout.adapter_ad, null);
         final ImageView imageView = (ImageView) view.findViewById(R.id.image);
-        ADInfo ad = infoList.get(position % infoList.size());
+        Banner ad = infoList.get(position % infoList.size());
         if(ad != null && ad.getImageUtl() != null){
             AsyncImageLoader loader = new AsyncImageLoader(mContext);
             loader.setCache2File(true); //false

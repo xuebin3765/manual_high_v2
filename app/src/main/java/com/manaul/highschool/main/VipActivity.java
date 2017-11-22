@@ -65,7 +65,7 @@ public class VipActivity extends AppCompatActivity implements OnClickListener {
 	private TextView allPrice;
 	private String allPriceTest;
 
-	private double price = Constant.MONWEY_90;
+	private double price = Constant.MONWEY_180;
 	private int type = 3;
 	private String title = "开通【180天】会员";
 
@@ -324,8 +324,8 @@ public class VipActivity extends AppCompatActivity implements OnClickListener {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-
-		BP.pay(title, title , price , alipayOrWechatPay, new PListener() {
+		String message = "您（"+user.getUsername()+"）将"+title;
+		BP.pay(title, message , price , alipayOrWechatPay, new PListener() {
 			// 因为网络等原因,支付结果未知(小概率事件),出于保险起见稍后手动查询
 			@Override
 			public void unknow() {
@@ -391,8 +391,11 @@ public class VipActivity extends AppCompatActivity implements OnClickListener {
 							.show();
 					// installBmobPayPlugin("bp.db");
 					installApk("bp.db");
-				} else {
-					Toast.makeText(mContext, "网络链接失败，支付取消"+code, Toast.LENGTH_SHORT).show();
+				} else if (code == -2) {
+					Toast.makeText(mContext, "取消支付", Toast.LENGTH_SHORT).show();
+				}else {
+					Toast.makeText(mContext, "支付取消", Toast.LENGTH_SHORT).show();
+
 				}
 
 				hideDialog();
