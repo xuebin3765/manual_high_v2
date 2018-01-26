@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.manaul.highschool.bean.User;
 import com.manaul.highschool.utils.FormatCheckUtils;
 import com.manaul.highschool.utils.ProgressDialogUtils;
-import com.manaul.highschool.utils.ToastUtils;
+import com.manaul.highschool.utils.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import cn.bmob.v3.exception.BmobException;
@@ -78,9 +78,8 @@ public class ForgetPwdActivity extends AppCompatActivity{
 
 	public void updatePwd() {
 		final String em = email.getText().toString().trim();
-
 		if (!FormatCheckUtils.isAccount(em)) {
-			ToastUtils.showToastShort(mContext, "请输入正确的邮箱地址");
+			ToastUtil.toast(mContext, "请输入正确的邮箱地址");
 			return;
 		}
 
@@ -104,7 +103,7 @@ public class ForgetPwdActivity extends AppCompatActivity{
 
 				} else {
 					progressDialogUtils.hideDialog();
-					ToastUtils.showToastShort(mContext, "失败:" + e.getMessage());
+					ToastUtil.toast(mContext, "失败:" + e.getMessage());
 				}
 			}
 		});

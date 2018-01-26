@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="app_theme">#ff7800</color>
+
     <color name="colorPrimary">#2f4050</color>
     <color name="colorPrimaryDark">#2f4050</color>
     <color name="colorAccent">#FF4081</color>
@@ -27,4 +30,25 @@
     <color name="text_coler_black">#676a6c</color><!-- 文字颜色 -->
 
     <color name="text_coler_01">#FF9966</color><!-- 文字颜色 -->
+
+    <color name="toast_bg">#99000000</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="app_content">#ffffff</color>
+
+    <color name="tFont_color_333333">#333333</color>
+    <color name="sFont_color_666666">#666666</color>
+    <color name="fFont_color_ffffff">#ffffff</color>
+    <color name="fFont_color_ff7800">@color/app_theme</color>
+    <color name="cFont_color_cccccc">#cccccc</color>
+
+    <!-- 新的分割线颜色 v 3.4.1 -->
+    <color name="dividing_line_colorD">#eeeeee</color>
+
+    <!-- 点击效果叠加的颜色 -->
+    <color name="bg_sel">#33000000</color>
+    <color name="empty_color">#00ffffff</color>
+    <color name="lucency_white">#00ffffff</color>
+    <color name="app_content_title">#333333</color>
+    <color name="basic_border_color">#dddddd</color>
 </resources>

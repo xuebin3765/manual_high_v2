@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,10 +17,9 @@ import com.manaul.highschool.bean.Banner;
 import com.manaul.highschool.loader.AsyncImageLoader;
 import com.manaul.highschool.loader.UrlDrawable;
 import com.manaul.highschool.utils.Constant;
-import com.manaul.highschool.utils.LoggerUtil;
-import com.manaul.highschool.utils.SharedConfig;
+import com.manaul.highschool.utils.DebugUtil;
 import com.manaul.highschool.utils.SharedPreferenceUtil;
-import com.manaul.highschool.utils.ToastUtils;
+import com.manaul.highschool.utils.SystemUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -50,13 +48,13 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		mContext = this;
 		setContentView(R.layout.welcome);
-		versionName = SharedPreferenceUtil.getInstance(mContext).getByStringKey("versionName");
+		versionName = SharedPreferenceUtil.getInstance(mContext).getStringByKey("versionName");
         // 复制数据库
-        if (Constant.IS_TEST || versionName == null || !Constant.getVersionName(mContext).equals(versionName)) {
+        if (SystemUtil.APP_TEST || versionName == null || !SystemUtil.getVersionName(mContext).equals(versionName)) {
             boolean copyData = SharedPreferenceUtil.getInstance(mContext).copyFileFromAssets(mContext);
             if (copyData) {
-				SharedPreferenceUtil.getInstance(mContext).setByStringKey("versionName", Constant.getVersionName(mContext));
-				SharedPreferenceUtil.getInstance(mContext).setIntByKey("versionCode", Constant.getVersionCode(mContext));
+				SharedPreferenceUtil.getInstance(mContext).setStringByKey("versionName", SystemUtil.getVersionName(mContext));
+				SharedPreferenceUtil.getInstance(mContext).setIntByKey("versionCode", SystemUtil.getVersionCode(mContext));
             }
         }
         
@@ -65,8 +63,8 @@ public class MainActivity extends Activity {
 		BP.init(Constant.BMOB_APKID); // 支付初始化
 
 		// 初始化数据
-		final String startBanners = SharedPreferenceUtil.getInstance(mContext).getByStringKey("startBanners");
-		LoggerUtil.showLog(startBanners);
+		final String startBanners = SharedPreferenceUtil.getInstance(mContext).getStringByKey("startBanners");
+		DebugUtil.d(startBanners);
 		if(startBannerList.size() <= 0){
 			if(startBanners != null){
 				// 从 本地缓存中获取
@@ -160,17 +158,17 @@ public class MainActivity extends Activity {
 	public void cacheBannerHomePic(){
 		BmobQuery<Banner> query = new BmobQuery<Banner>();
 		query.order("-sort");
-		query.addWhereEqualTo("appId" , Constant.APP_ID);
+		query.addWhereEqualTo("appId" , SystemUtil.APP_ID);
 		query.addWhereEqualTo("type" , Constant.BANNER_TYPE_START);
 		query.findObjects(new FindListener<Banner>() {
 			@Override
 			public void done(List<Banner> object, BmobException e) {
 				if(e==null){
 					String jsonObject = JSONArray.toJSONString(object);
-					SharedPreferenceUtil.getInstance(mContext).setByStringKey("startBanners" , jsonObject);
+					SharedPreferenceUtil.getInstance(mContext).setStringByKey("startBanners" , jsonObject);
 					startBannerList = object;
 				}else{
-					LoggerUtil.showLog("cacheBannerPic 失败："+e.getMessage()+","+e.getErrorCode());
+					DebugUtil.d("cacheBannerPic 失败："+e.getMessage()+","+e.getErrorCode());
 				}
 			}
 		});

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_gray"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/fText.XLarge"
+        android:drawableLeft="@drawable/toast_tick_icon"
+        android:drawablePadding="@dimen/drawable_padding_x_small"
+        android:gravity="center_vertical"
+        android:text="评论成功"
+        />
+
+    <TextView
+        android:id="@+id/sub_title"
+        style="@style/fText.Small"
+        android:layout_below="@+id/title"
+        android:drawablePadding="@dimen/drawable_padding_x_small"
+        android:layout_marginLeft="36dp"
+        android:gravity="center_vertical"
+        android:text="评论成功"
+        />
+
+</RelativeLayout>

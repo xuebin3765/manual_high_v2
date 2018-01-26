@@ -21,17 +21,14 @@ import android.widget.TextView;
 import com.manaul.highschool.adapter.ImagePagerAdapter;
 import com.manaul.highschool.loader.AsyncImageLoader;
 import com.manaul.highschool.utils.Constant;
-import com.manaul.highschool.utils.DataUtil;
-import com.manaul.highschool.utils.SharedConfig;
+import com.manaul.highschool.utils.SharedPreferenceUtil;
 import com.manaul.highschool.view.ZoomImageView;
 import com.umeng.analytics.MobclickAgent;
 
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @SuppressLint("InlinedApi")
 public class ShowPicActivity extends AppCompatActivity {
@@ -43,8 +40,6 @@ public class ShowPicActivity extends AppCompatActivity {
 
 	private TextView tvTitle ;
 	
-	private SharedPreferences shareConfig;
-	
 	@SuppressWarnings("deprecation")
 	@SuppressLint("InlinedApi")
 	@Override
@@ -53,10 +48,7 @@ public class ShowPicActivity extends AppCompatActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_show_pic);
 		mContext = this;
-		shareConfig = new SharedConfig(mContext).getConfig();
-
-		String images = shareConfig.getString("images" , null);
-
+		String images = SharedPreferenceUtil.getInstance(mContext).getStringByKey("images");
 		ArrayList<String> imgUrlArray = new ArrayList<String>();
 		if(images !=null && images.length() > 0){
 			String urlImg[] = StringUtils.split(images , "&&");

@@ -7,11 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.manaul.highschool.bean.ADInfo;
 import com.manaul.highschool.bean.Banner;
 import com.manaul.highschool.loader.AsyncImageLoader;
 import com.manaul.highschool.main.R;
-import com.manaul.highschool.utils.ToastUtils;
 
 import java.util.List;
 

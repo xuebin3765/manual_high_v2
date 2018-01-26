@@ -2,9 +2,7 @@ package com.manaul.highschool.main;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -19,13 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.manaul.highschool.bean.User;
+import com.manaul.highschool.manager.UserManager;
+import com.manaul.highschool.model.UserModel;
 import com.manaul.highschool.utils.DataUtil;
+import com.manaul.highschool.utils.SharedPreferenceUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.Date;
-
-import cn.bmob.v3.BmobUser;
 
 public class ActivityMy extends AppCompatActivity implements OnClickListener {
 	private TextView loginTitle;
@@ -40,7 +38,7 @@ public class ActivityMy extends AppCompatActivity implements OnClickListener {
 
 	private Context mContext;
 	
-	private User user ;
+	private UserModel userModel ;
 
 	@TargetApi(Build.VERSION_CODES.KITKAT)
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +59,7 @@ public class ActivityMy extends AppCompatActivity implements OnClickListener {
 		setContentView(R.layout.activity_center_my);
 		ActionBar mActionbar = getSupportActionBar();
 		Intent intent = getIntent();
+
 		if (mActionbar != null) {
 			mActionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 			mActionbar.setDisplayShowCustomEnabled(true);
@@ -99,13 +98,20 @@ public class ActivityMy extends AppCompatActivity implements OnClickListener {
 		my_logout.setOnClickListener(this);
 		my_about_me.setOnClickListener(this);
 
-		user = BmobUser.getCurrentUser(User.class);
-		if (user != null) {
-			loginTitle.setText("用户名："+user.getEmail());
+		userModel = UserManager.getUser(mContext);
+
+		if (userModel != null) {
+			loginTitle.setText("用户名："+userModel.getAccount());
 			login.setClickable(false);
 			my_update_pwd.setVisibility(View.VISIBLE);
-			if(DataUtil.vipIsEnd(user.getVipEnd())){
-				loginText.setText("VIP有效期："+ DataUtil.getAfterTime(new Date(user.getVipEnd()),0));
+//			if(DataUtil.vipIsEnd(user.getVipEnd())){
+//				loginText.setText("VIP有效期："+ DataUtil.getAfterTime(new Date(user.getVipEnd()),0));
+//			}else {
+//				loginText.setText("VIP有效期：未开通" );
+//			}
+
+			if(DataUtil.vipIsEnd(userModel.getCreated())){
+				loginText.setText("VIP有效期："+ DataUtil.getAfterTime(new Date(userModel.getCreated()),0));
 			}else {
 				loginText.setText("VIP有效期：未开通" );
 			}
@@ -120,7 +126,6 @@ public class ActivityMy extends AppCompatActivity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-
 		if (v.getId() == R.id.my_about_me) {
 			Intent intentVip = new Intent(mContext, ActivityAboutMe.class);
 			intentVip.putExtra("top_title", mContext.getResources().getString(R.string.my_about_my));
@@ -148,7 +153,7 @@ public class ActivityMy extends AppCompatActivity implements OnClickListener {
 		}
 		if (v.getId() == R.id.my_vip) {
 			Intent intent = null;
-			if(user != null){
+			if(userModel != null){
 				intent =new Intent(mContext, VipActivity.class);
 				intent.putExtra("top_title", mContext.getResources().getString(R.string.my_vip));
 				
@@ -176,20 +181,9 @@ public class ActivityMy extends AppCompatActivity implements OnClickListener {
 		}
 
 		if (v.getId() == R.id.my_logout) {
-			new AlertDialog.Builder(mContext).setTitle("退出登陆")
-					.setMessage("您确定要退出当前用户吗？")
-					.setPositiveButton("立即退出", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							User.logOut();
-							init();
-						}
-					}).setNegativeButton("暂不退出", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-
-						}
-					}).show();
+			SharedPreferenceUtil.getInstance(mContext).setLongByKey("userId" , 0);
+			SharedPreferenceUtil.getInstance(mContext).setStringByKey("userAccessToken" , null);
+			init();
 		}
 
 	}

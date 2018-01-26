@@ -17,6 +17,8 @@ public class ProgressDialogUtils {
 
     public void show(String message) {
         try {
+            this.hideDialog();
+
             if (dialog == null) {
                 dialog = new ProgressDialog(mContext);
                 dialog.setCancelable(true);

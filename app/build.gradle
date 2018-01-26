@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.3'
@@ -11,6 +17,9 @@ android {
         versionName "2.3.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary= true
+        jackOptions {
+            enabled true
+        }
     }
     buildTypes {
         release {
@@ -23,16 +32,31 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+    dexOptions {
+        incremental true
+    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
+    compile(name: 'Pull_To_Refresh', ext: 'aar')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+    compile 'commons-lang:commons-lang:2.6'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    compile 'com.squareup.okio:okio:1.7.0'
     //以下SDK开发者请根据需要自行选择
     //bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务，以下是最新的bmob-sdk:
     //3.5.5：请务必查看下面注释[1]
@@ -49,5 +73,8 @@ dependencies {
     // 友盟统计
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.alibaba:fastjson:1.1.61.android'
+    compile 'org.greenrobot:eventbus:3.0.0'
     compile files('libs/BmobPay_v3.2.2_171019.jar')
+    compile files('libs/afinal_0.5.1_bin.jar')
+    compile files('libs/systembartint-1.0.4.jar')
 }

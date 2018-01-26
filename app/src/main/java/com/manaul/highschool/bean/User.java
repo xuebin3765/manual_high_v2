@@ -8,6 +8,9 @@ public class User extends BmobUser {
 	private int isVip; 
 	private int privilege;
 	private long vipEnd; // 会员起始时间
+	private String headPic;
+	private String nickName;
+	private int gender;
 
 	public String getAccessToken() {
 		return accessToken;
@@ -42,4 +45,27 @@ public class User extends BmobUser {
 		this.vipEnd = vipEnd;
 	}
 
+	public String getHeadPic() {
+		return headPic;
+	}
+
+	public void setHeadPic(String headPic) {
+		this.headPic = headPic;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+	public int getGender() {
+		return gender;
+	}
+
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
 }

@@ -30,7 +30,7 @@ import android.widget.Toast;
 import com.manaul.highschool.bean.User;
 import com.manaul.highschool.utils.Constant;
 import com.manaul.highschool.utils.DataUtil;
-import com.manaul.highschool.utils.ToastUtils;
+import com.manaul.highschool.utils.ToastUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -329,7 +329,7 @@ public class VipActivity extends AppCompatActivity implements OnClickListener {
 			// 因为网络等原因,支付结果未知(小概率事件),出于保险起见稍后手动查询
 			@Override
 			public void unknow() {
-				ToastUtils.showToastShort(mContext , "支付结果未知,请稍后手动查询或联系客服！");
+				ToastUtil.toast(mContext , "支付结果未知,请稍后手动查询或联系客服！");
 			}
 
 			// 支付成功,如果金额较大请手动查询确认
@@ -354,7 +354,7 @@ public class VipActivity extends AppCompatActivity implements OnClickListener {
 				// 未过期
 				if(DataUtil.vipIsEnd(user.getVipEnd())){
 					user.setVipEnd(DataUtil.getAfterTimeLong(new Date(user.getVipEnd()) , day));
-					ToastUtils.showToastShort(mContext , DataUtil.getCurrentTime(new Date(user.getVipEnd())));
+					ToastUtil.toast(mContext , DataUtil.getCurrentTime(new Date(user.getVipEnd())));
 				}else {
 					user.setVipEnd(DataUtil.getAfterTimeLong(new Date() , day));
 				}
@@ -366,9 +366,9 @@ public class VipActivity extends AppCompatActivity implements OnClickListener {
 					public void done(BmobException e) {
 						hideDialog();
 						if(e==null){
-							ToastUtils.showToastShort(mContext , "激活成功");
+							ToastUtil.toast(mContext , "激活成功");
 						}else{
-							ToastUtils.showToastShort(mContext , "激活失败，如已付款请联系客服");
+							ToastUtil.toast(mContext , "激活失败，如已付款请联系客服");
 						}
 					}
 				});
@@ -389,7 +389,6 @@ public class VipActivity extends AppCompatActivity implements OnClickListener {
 				if (code == -3) {
 					Toast.makeText(mContext, "监测到你尚未安装支付插件,无法进行支付,请先安装插件(已打包在本地,无流量消耗),安装结束后重新支付", Toast.LENGTH_SHORT)
 							.show();
-					// installBmobPayPlugin("bp.db");
 					installApk("bp.db");
 				} else if (code == -2) {
 					Toast.makeText(mContext, "取消支付", Toast.LENGTH_SHORT).show();

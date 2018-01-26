@@ -20,7 +20,7 @@ import com.manaul.highschool.bean.User;
 import com.manaul.highschool.dao.NavigateDao;
 import com.manaul.highschool.dao.SQLiteHelper;
 import com.manaul.highschool.utils.DataUtil;
-import com.manaul.highschool.utils.ToastUtils;
+import com.manaul.highschool.utils.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class ContentListActivity extends AppCompatActivity {
 			iv_tbb_user.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					ToastUtils.showToastShort(mContext , "用户");
+					ToastUtil.toast(mContext, "用户");
 				}
 			});
 		}

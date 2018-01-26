@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 public class FormatCheckUtils {
     /**
      * 验证账户，手机号或邮箱
-     *
      *  现在只支持 邮箱 ， 修改密码需要邮箱
      * @param account
      * @return
@@ -23,7 +22,6 @@ public class FormatCheckUtils {
      * @return
      */
     public static boolean isPhoneLegal(String phone){
-//        String regExp = "^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$";
         String regExp = "^((13[0-9])|(15[0-9])|(18[0-9])|(17[0-9])|(147))\\d{8}$";
         return Pattern.matches(regExp , phone);
     }

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.manaul.highschool.bean.UpdateApk;
 import com.manaul.highschool.service.DownloadService;
 import com.manaul.highschool.utils.Constant;
+import com.manaul.highschool.utils.SystemUtil;
 
 import java.util.List;
 
@@ -82,7 +83,7 @@ public class ActivitySetting extends AppCompatActivity implements OnClickListene
 					proDia.dismiss();// 隐藏对话框
 					if (arg0 != null && arg0.size() > 0) {
 						final UpdateApk apk = arg0.get(0);
-						if (!apk.getVersion().equals(Constant.getVersionName(getApplicationContext()))) {
+						if (!apk.getVersion().equals(SystemUtil.getVersionName(getApplicationContext()))) {
 
 							/* 系统提示对话框 */
 							new AlertDialog.Builder(ActivitySetting.this).setTitle("版本更新")// 设置对话框标题
@@ -102,12 +103,12 @@ public class ActivitySetting extends AppCompatActivity implements OnClickListene
 							}).show();// 在按键响应事件中显示此对话框
 						} else {
 							Toast.makeText(getApplicationContext(),
-									"当前已经是最新版本:" + Constant.getVersionName(getApplicationContext()), Toast.LENGTH_LONG)
+									"当前已经是最新版本:" + SystemUtil.getVersionName(getApplicationContext()), Toast.LENGTH_LONG)
 									.show();
 						}
 					}else {
 						Toast.makeText(getApplicationContext(),
-								"当前已经是最新版本:" + Constant.getVersionName(getApplicationContext()), Toast.LENGTH_LONG)
+								"当前已经是最新版本:" + SystemUtil.getVersionName(getApplicationContext()), Toast.LENGTH_LONG)
 								.show();
 					}
 				}

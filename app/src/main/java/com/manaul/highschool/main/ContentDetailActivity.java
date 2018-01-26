@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,8 +26,8 @@ import com.manaul.highschool.dao.ListItemShareDao;
 import com.manaul.highschool.dao.NavigateDao;
 import com.manaul.highschool.dao.SQLiteHelper;
 import com.manaul.highschool.utils.DataUtil;
-import com.manaul.highschool.utils.SharedConfig;
-import com.manaul.highschool.utils.ToastUtils;
+import com.manaul.highschool.utils.SharedPreferenceUtil;
+import com.manaul.highschool.utils.ToastUtil;
 import com.manaul.highschool.view.LinkMovementMethodExt;
 import com.manaul.highschool.view.MessageSpan;
 import com.manaul.highschool.view.TextViewFormHtmlUtil;
@@ -39,7 +37,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import cn.bmob.v3.BmobUser;
 
@@ -59,7 +56,6 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 	private ListItemShare itemShare = null;
 	private int parentId;
 	private int itemId;
-	private SharedPreferences shareConfig;
 	private Intent intent;
 	private Handler mHandler;
 	private Button back;
@@ -101,9 +97,6 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 				}
 			});
 		}
-
-		shareConfig = new SharedConfig(mContext).getConfig();
-
 		// 初始=
 		init();
 
@@ -192,9 +185,7 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 					imageUrlList.remove(string);
 			}
 		}
-		Editor editor = shareConfig.edit();
-		editor.putString("images", StringUtils.join(imageUrlList , "&&"));
-		editor.commit();
+		SharedPreferenceUtil.getInstance(mContext).setStringByKey("images", StringUtils.join(imageUrlList , "&&"));
 
 		mHandler = new Handler() {
 			public void handleMessage(Message msg) {
@@ -246,7 +237,7 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 	public void onClick(View v) {
 		if (v.getId() == R.id.back) {
 			if (index - 1 < 0) {
-				ToastUtils.showToastShort(mContext, "亲，已经是第一篇了");
+				ToastUtil.toast(mContext, "亲，已经是第一篇了");
 			} else { // 进入上一页
 				index--;
 				ItemContent itemContent = navigateDao.getItemContent(list.get(index));
@@ -271,14 +262,14 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 						startActivity(intent);
 					}
 				} else {
-					ToastUtils.showToastShort(mContext, "数据好像出错了");
+					ToastUtil.toast(mContext, "数据好像出错了");
 				}
 
 			}
 		}
 		if (v.getId() == R.id.next) {
 			if (index + 1 >= list.size()) {
-				ToastUtils.showToastShort(mContext, "亲，已经是最后一篇了");
+				ToastUtil.toast(mContext, "亲，已经是最后一篇了");
 			} else { // 进入下一页
 				index++;
 				ItemContent itemContent = navigateDao.getItemContent(list.get(index));
@@ -303,7 +294,7 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 						startActivity(intent);
 					}
 				} else {
-					ToastUtils.showToastLength(mContext, "数据好像出错了");
+					ToastUtil.toast(mContext, "数据好像出错了");
 				}
 
 			}

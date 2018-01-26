@@ -66,12 +66,6 @@ public class DataUtil {
 		return imageSrcList;
 	}
 
-	public static String getImageRealUrl(String url) {
-		url = url.substring(url.lastIndexOf(Constant.APP_TYPE));
-		url = Constant.APP_TYPE + "_content_img/" + url;
-		return url;
-	}
-
 	/**
 	 * 给定日期 指定天数后的日期，
 	 * @param date 给定日期
@@ -94,7 +88,6 @@ public class DataUtil {
 	 * @return
 	 */
 	public static long getAfterTimeLong(Date date, int day) {
-		Date dBefore = null;
 		Calendar calendar = Calendar.getInstance(); // 得到日历
 		calendar.setTime(date);// 把当前时间赋给日期
 		calendar.add(calendar.DATE, day);

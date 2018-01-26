@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.manaul.highschool.bean.User;
 import com.manaul.highschool.utils.FormatCheckUtils;
-import com.manaul.highschool.utils.ToastUtils;
+import com.manaul.highschool.utils.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import cn.bmob.v3.BmobUser;
@@ -85,12 +85,12 @@ public class ResetpwdActivity extends AppCompatActivity {
 		String newRPwd = mPwdCheck.getText().toString().trim();
 
 		if (!FormatCheckUtils.isPassword(oldPwd)) {
-			ToastUtils.showToastShort(mContext, "密码应为6-18个字符");
+			ToastUtil.toast(mContext, "密码应为6-18个字符");
 			return;
 		}
 
 		if (!newPwd.equals(newRPwd)) {
-			ToastUtils.showToastShort(mContext, "两次密码输入不一致");
+			ToastUtil.toast(mContext, "两次密码输入不一致");
 			return;
 		}
 		
@@ -102,7 +102,7 @@ public class ResetpwdActivity extends AppCompatActivity {
 				@Override
 				public void done(BmobException e) {
 					if(e==null){
-						ToastUtils.showToastShort(mContext, "密码修改成功，请使用新密码重新登陆");
+						ToastUtil.toast(mContext, "密码修改成功，请使用新密码重新登陆");
 						User.logOut();  //清除缓存用户对象
 						// 登陆
 						Intent intent = new Intent(mContext, LoginActivity.class);
@@ -111,12 +111,12 @@ public class ResetpwdActivity extends AppCompatActivity {
 						overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 						finish();
 			        }else{
-			        	ToastUtils.showToastShort(mContext, "修改失败，请检查旧密码是否正确"+e.getMessage());
+						ToastUtil.toast(mContext, "修改失败，请检查旧密码是否正确"+e.getMessage());
 			        }
 				}
 			});
 		} else {
-			ToastUtils.showToastShort(mContext, "登陆失效，请重新登陆");
+			ToastUtil.toast(mContext, "登陆失效，请重新登陆");
 			// 登陆
 			Intent intent = new Intent(mContext, LoginActivity.class);
 			intent.putExtra("top_title", "登陆");

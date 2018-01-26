@@ -4,14 +4,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,8 +22,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.manaul.highschool.adapter.CyclePagerAdapter;
 import com.manaul.highschool.adapter.MyGridAdapterProject;
-import com.manaul.highschool.bean.ADInfo;
-import com.manaul.highschool.bean.AdPicture;
 import com.manaul.highschool.bean.Banner;
 import com.manaul.highschool.bean.Project;
 import com.manaul.highschool.bean.UpdateApk;
@@ -34,15 +30,14 @@ import com.manaul.highschool.dao.NavigateDao;
 import com.manaul.highschool.dao.SQLiteHelper;
 import com.manaul.highschool.service.DownloadService;
 import com.manaul.highschool.utils.Constant;
-import com.manaul.highschool.utils.LoggerUtil;
-import com.manaul.highschool.utils.SharedConfig;
+import com.manaul.highschool.utils.DebugUtil;
 import com.manaul.highschool.utils.SharedPreferenceUtil;
+import com.manaul.highschool.utils.SystemUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bmob.push.lib.util.LogUtil;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -125,8 +120,8 @@ public class NewHomeActivity extends AppCompatActivity {
         dot_layout = (LinearLayout)findViewById(R.id.fg3_dot_layout);
 //        initData();
         // 初始化数据
-        final String homeBanners = SharedPreferenceUtil.getInstance(mContext).getByStringKey("homeBanners");
-        LoggerUtil.showLog(homeBanners);
+        final String homeBanners = SharedPreferenceUtil.getInstance(mContext).getStringByKey("homeBanners");
+        DebugUtil.d(homeBanners);
         if(bannerHomeList.size() <= 0){
             if(homeBanners != null){
                 // 从 本地缓存中获取
@@ -196,17 +191,21 @@ public class NewHomeActivity extends AppCompatActivity {
      */
     private void validate(Context mContext) {
         user = BmobUser.getCurrentUser(User.class);
-        validateTime = SharedPreferenceUtil.getInstance(mContext).getLongByKey("validateTime");
+        // 存到系统数据中
+        validateTime = SharedPreferenceUtil.getInstance(mContext ).getLongByKey("validateTime");
+        // 存在用户数据中
         validateLoginTime = SharedPreferenceUtil.getInstance(mContext).getLongByKey("validateLoginTime");
         // 验证登陆时间 1000 * 60 * 60 * 5
         if (validateLoginTime == 0 || (System.currentTimeMillis() - validateLoginTime) > 1000 * 60 * 60 * 5) {
             validateLogin(); // 验证登录
             cacheBannerHomePic(); // 缓存相关数据
+            // 存在用户数据中
             SharedPreferenceUtil.getInstance(mContext).setLongByKey("validateLoginTime", System.currentTimeMillis());
         }
         // 验证登陆时间 1000 * 60 * 60 * 24
         if (validateTime == 0 || (System.currentTimeMillis() - validateTime) > 1000 * 60 * 60 * 24) {
             checkUpdate(); // 检查更新
+            // 存到系统数据中
             SharedPreferenceUtil.getInstance(mContext).setLongByKey("validateTime", System.currentTimeMillis());
         }
     }
@@ -218,8 +217,8 @@ public class NewHomeActivity extends AppCompatActivity {
             public void done(List<UpdateApk> arg0, BmobException arg1) {
             if (arg0 != null && arg0.size() > 0) {
                 final UpdateApk apk = arg0.get(0);
-                LoggerUtil.showLog(" Constant.getVersionCode(mContext) = "+Constant.getVersionCode(mContext));
-                if (mContext != null && apk.getVersionCode() != Constant.getVersionCode(mContext)) {
+                DebugUtil.d(" Constant.getVersionCode(mContext) = "+ SystemUtil.getVersionCode(mContext));
+                if (mContext != null && apk.getVersionCode() != SystemUtil.getVersionCode(mContext)) {
                     new AlertDialog.Builder(mContext).setTitle("有新版本啦！")//
                             .setMessage(apk.getMessage())//
                             .setPositiveButton("立即更新", new DialogInterface.OnClickListener() {
@@ -246,17 +245,17 @@ public class NewHomeActivity extends AppCompatActivity {
     public void cacheBannerHomePic(){
         BmobQuery<Banner> query = new BmobQuery<Banner>();
         query.order("-sort");
-        query.addWhereEqualTo("appId" , Constant.APP_ID);
+        query.addWhereEqualTo("appId" , SystemUtil.APP_ID);
         query.addWhereEqualTo("type" , Constant.BANNER_TYPE_HOME);
         query.findObjects(new FindListener<Banner>() {
             @Override
             public void done(List<Banner> object, BmobException e) {
                 if(e==null){
                     String jsonObject = JSONArray.toJSONString(object);
-                    SharedPreferenceUtil.getInstance(mContext).setByStringKey("homeBanners" , jsonObject);
+                    SharedPreferenceUtil.getInstance(mContext).setStringByKey("homeBanners" , jsonObject);
                     bannerHomeList = object;
                 }else{
-                    LoggerUtil.showLog("cacheBannerPic 失败："+e.getMessage()+","+e.getErrorCode());
+                    DebugUtil.d("cacheBannerPic 失败："+e.getMessage()+","+e.getErrorCode());
                 }
             }
         });

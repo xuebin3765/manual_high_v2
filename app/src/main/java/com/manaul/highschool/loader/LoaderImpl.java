@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.manaul.highschool.utils.DebugUtil;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -35,7 +37,7 @@ public class LoaderImpl {
     }  
       
     /** 
-     * 是否缓存图片至外部文�? 
+     * 是否缓存图片至外部文件
      * @param flag  
      */  
     public void setCache2File(boolean flag){  
@@ -65,19 +67,17 @@ public class LoaderImpl {
             InputStream is = conn.getInputStream();  
             bitmap = BitmapFactory.decodeStream(is);  
               
-            if(cache2Memory){  
-            	Log.e("22222", " 缓存bitmap至内存软引用�?    ");
+            if(cache2Memory){
+                DebugUtil.d( " 缓存bitmap至内存软引用");
                 //1.缓存bitmap至内存软引用�?  
                 imageCache.put(url, new SoftReference<Bitmap>(bitmap));  
                 if(cache2FileFlag){  
-                    //2.缓存bitmap�?/data/data/packageName/cache/文件夹中  
-                    String fileName = getMD5Str(url);  
+                    String fileName = getMD5Str(url);
                     String filePath = this.cachedDir + "/" +fileName;  
                     FileOutputStream fos = new FileOutputStream(filePath);  
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);  
                 }  
-            }  
-              
+            }
             is.close();  
             conn.disconnect();  
             return bitmap;  
@@ -94,8 +94,8 @@ public class LoaderImpl {
      */  
     public Bitmap getBitmapFromMemory(String url){  
         Bitmap bitmap = null;
-        if(imageCache.containsKey(url)){  
-        	Log.e("22222", " 从内存缓存文件读");
+        if(imageCache.containsKey(url)){
+            DebugUtil.d( " 从内存缓存文件读");
             synchronized(imageCache){  
                 SoftReference<Bitmap> bitmapRef = imageCache.get(url);  
                 if(bitmapRef != null){  
@@ -104,9 +104,9 @@ public class LoaderImpl {
                 }  
             }  
         }  
-        // 从外部缓存文件读�?  
-        if(cache2FileFlag){  
-        	Log.e("22222", " 从外部缓存文件读�?      ");
+        // 从外部缓存文件读取
+        if(cache2FileFlag){
+            DebugUtil.d( " 从外部缓存文件读取");
             bitmap = getBitmapFromFile(url);  
             if(bitmap != null)  
                 imageCache.put(url, new SoftReference<Bitmap>(bitmap));  
@@ -124,10 +124,8 @@ public class LoaderImpl {
         Bitmap bitmap = null;  
         String fileName = getMD5Str(url);  
         if(fileName == null)  
-            return null;  
-          
-        String filePath = cachedDir + "/" + fileName;  
-          
+            return null;
+        String filePath = cachedDir + "/" + fileName;
         try {  
             FileInputStream fis = new FileInputStream(filePath);  
             bitmap = BitmapFactory.decodeStream(fis);  
@@ -166,15 +164,5 @@ public class LoaderImpl {
         }     
      
         return md5StrBuff.toString();     
-    }    
-  
-    /**   
-     * MD5 加密   
-    private static String getMD5Str(Object...objects){ 
-        StringBuilder stringBuilder=new StringBuilder(); 
-        for (Object object : objects) { 
-            stringBuilder.append(object.toString()); 
-        } 
-        return getMD5Str(stringBuilder.toString()); 
-    }*/   
+    }
 }

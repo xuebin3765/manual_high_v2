@@ -10,30 +10,30 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
+ * 本地数据操作
  * Created by Administrator on 2017/11/22.
  */
 
 public class SharedPreferenceUtil {
     private SharedPreferences sp = null;
     private static SharedPreferenceUtil Instance = null;
-    private static final String KEY_SP = "UserInfoManager";
 
-    private SharedPreferenceUtil(Context context) {
-        sp = context.getSharedPreferences(KEY_SP, Context.MODE_PRIVATE);
+    private SharedPreferenceUtil(Context context , String dataName) {
+        sp = context.getSharedPreferences(dataName, Context.MODE_PRIVATE);
     }
 
+    // 存储系统数据
     public static SharedPreferenceUtil getInstance(Context context) {
-        if (Instance == null) {
-            Instance = new SharedPreferenceUtil(context);
-        }
+        if (Instance == null)
+            Instance = new SharedPreferenceUtil(context , SystemUtil.APP_LOCAL_DATA);
         return Instance;
     }
 
-    public void setByStringKey(String key, String value) {
+    public void setStringByKey(String key, String value) {
         sp.edit().putString(key, value).commit();
     }
 
-    public String getByStringKey(String key) {
+    public String getStringByKey(String key) {
         return sp.getString(key,null);
     }
 
@@ -66,7 +66,6 @@ public class SharedPreferenceUtil {
             sp.edit().clear().commit();
         } catch (Exception e) {
         }
-
     }
 
     /**
@@ -84,7 +83,7 @@ public class SharedPreferenceUtil {
                 file.delete();
                 Log.e("create", "删除");
             }
-            if (file.exists() == false) {
+            if (file.exists()) {
                 File f = new File(filepath);
                 if (!f.exists()) {
                     f.mkdir();
@@ -120,13 +119,13 @@ public class SharedPreferenceUtil {
         boolean result = false;
         try {
             String filepath = "/data/data/" + context.getPackageName() + "/databases/";
-            String fileName = Constant.APP_TYPE+".db";
+            String fileName = SystemUtil.APP_DATABASE_NAME+".db";
             File file = new File(filepath + fileName);
             if (file.exists() && file.isFile()) {
                 file.delete();
-                Log.e("create", "删除");
+                DebugUtil.d( " delete 删除 [ ".concat(fileName).concat(" ]"));
             }
-            if (file.exists() == false) {
+            if (!file.exists()) {
                 File f = new File(filepath);
                 if (!f.exists()) {
                     f.mkdir();
@@ -139,7 +138,7 @@ public class SharedPreferenceUtil {
                     while ((length = is.read(buffer)) > 0) {
                         os.write(buffer, 0, length);
                     }
-                    Log.e("create", "创建");
+                    DebugUtil.d( " create 创建 [ ".concat(fileName).concat(" ]"));
                     os.flush();
                     os.close();
                     is.close();

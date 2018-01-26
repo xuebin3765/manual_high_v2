@@ -1,0 +1,17 @@
+<!--
+  frament动画切换
+  -->
+<resources>
+    <integer name="card_flip_time_full">300</integer>
+    <integer name="card_flip_time_half">150</integer>
+    <integer name="slide_up_down_duration">200</integer>
+    <integer name="half_slide_up_down_duration">150</integer>
+    <integer name="slide_up_down_final_value">150</integer>
+    
+    <integer name="anim_time_small">200</integer>
+    <integer name="anim_time_normal">300</integer>
+    <integer name="anim_time_large">400</integer>
+    <integer name="anim_time_xlarge">500</integer>
+    <integer name="anim_time_xxxlarge">1000</integer>
+    
+</resources>

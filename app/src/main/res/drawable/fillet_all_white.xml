@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+  <!-- 圆角边框 --> 
+    <solid android:color="#ffffffff" />
+    <stroke
+        android:width="1px"
+        android:color="#ffffffff" />
+    <corners
+        android:radius="@dimen/fillet_border_normal"
+        />
+
+</shape>

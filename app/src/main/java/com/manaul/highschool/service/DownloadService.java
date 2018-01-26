@@ -10,7 +10,9 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
+
+import com.manaul.highschool.utils.DebugUtil;
+import com.manaul.highschool.utils.SystemUtil;
 
 import java.io.File;
 
@@ -19,43 +21,42 @@ public class DownloadService extends Service {
 	
 	private DownloadManager mDownloadManager;
     private BroadcastReceiver receiver;
-//    private  static final String APK_NAME="youni.apk";
-    private  static final String APK_NAME="koudaigk_"+ System.currentTimeMillis()+"_.apk";
+
     private String apkUrl;
     
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
     	apkUrl = intent.getStringExtra("onBind");
-    	Log.e("manaul_log", "onBind"+apkUrl+"===");
+        DebugUtil.d("onBind"+apkUrl+"===");
         return null;
     }
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e("manaul_log", "onCreate");
+        DebugUtil.d("onCreate");
         /*删除以前下载的安装包*/
-        RecursionDeleteFile(new File(Environment.getExternalStorageDirectory() + "/download/chinese/"));
+        RecursionDeleteFile(new File(Environment.getExternalStorageDirectory() + "/download/manual_high/"));
     }
 
     @SuppressWarnings("deprecation")
 	@Override
     public void onStart(Intent intent, int startId) {
     	apkUrl = intent.getStringExtra("url");
-    	Log.e("manaul_log", "onStart"+apkUrl);
+    	DebugUtil.d("onStart"+apkUrl);
         super.onStart(intent, startId);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
     	apkUrl = intent.getStringExtra("url");
-    	Log.e("manaul_log", "onStartCommand"+apkUrl);
+        DebugUtil.d("onStartCommand"+apkUrl);
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 intent = new Intent(Intent.ACTION_VIEW);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/download/chinese/"+APK_NAME)),
+                intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/download/manual_high/"+ SystemUtil.APP_APK_NAME)),
                         "application/vnd.android.package-archive");
                 startActivity(intent);
                 stopSelf();
@@ -68,18 +69,18 @@ public class DownloadService extends Service {
 
     @Override
     public void onDestroy() {
-    	Log.e("manaul_log", "onDestroy");
+        DebugUtil.d("onDestroy");
         unregisterReceiver(receiver);
         super.onDestroy();
     }
 
     private void startDownload() {
-    	Log.e("manaul_log", "startDownload");
+    	DebugUtil.d( "startDownload");
         mDownloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkUrl));
         request.setDescription("正在为您下载最新版本");
         request.setMimeType("application/vnd.android.package-archive");
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS+"/chinese", APK_NAME);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS+"/manual_high", SystemUtil.APP_APK_NAME);
         mDownloadManager.enqueue(request);
     }
     /**

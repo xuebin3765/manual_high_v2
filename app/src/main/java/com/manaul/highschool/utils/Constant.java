@@ -9,15 +9,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Constant {
-	public static final boolean IS_TEST = false;
-	public static final boolean SHOW_LOG = true;
-	public static final int APP_ID = 1;
+
 	public static final int BANNER_TYPE_START = 1;
 	public static final int BANNER_TYPE_HOME = 2;
 	
 	public static final String HOST_IMG = "http://ovb08chzs.bkt.clouddn.com/";
-
-	public static final String APP_TYPE = "gzxxsc";
 
 	public static final int DATABASE_VERSION = 1; // 数据库版
 	public static final String T_NAVIGATE = "t_navigate";
@@ -50,31 +46,16 @@ public class Constant {
 	
 	public static String WEI_XIN_PINGTAI = "";
 
-	public static String getVersionName(Context context) {
-		String version = "";
-		try {
-			PackageManager manager = context.getPackageManager();
-			PackageInfo info;
-			info = manager.getPackageInfo(context.getPackageName(), 0);
-			version = info.versionName;
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-		}
-		return version;
-	}
+	public static int DETAIL_IMAGE_WIDTH = 4;
+	public static int DETAIL_IMAGE_HEIGHT = 3;
 
-	public static int getVersionCode(Context context) {
-		int versionCode = 0;
-		try {
-			PackageManager manager = context.getPackageManager();
-			PackageInfo info;
-			info = manager.getPackageInfo(context.getPackageName(), 0);
-			versionCode = info.versionCode;
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-		}
-		return versionCode;
-	}
+	/**
+	 * 需要登录才能看到的缓存文件，和用户id 绑定，名称使用
+	 * $preference_custom_cache + id
+	 */
+	public final static String PREFERENCE_CUSTOM_CACHE = "preference_custom_cache";
+	public final static String KEY_DEFAULT_ADDRESS = "key_default_address";
+	public final static String KEY_ORDER_ID = "key_order_id";
 
 	/**
 	 * 获取加密后的字符
