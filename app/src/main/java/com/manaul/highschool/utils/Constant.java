@@ -11,11 +11,9 @@ import java.security.NoSuchAlgorithmException;
 public class Constant {
 	public static final boolean IS_TEST = false;
 	public static final boolean SHOW_LOG = true;
-	public static final int APP_ID = 1;
 	public static final int BANNER_TYPE_START = 1;
 	public static final int BANNER_TYPE_HOME = 2;
 
-	public static final String HOST_IMG = "http://118.89.46.74:8080/manaul/";
 	// appId : 1：高中生手册
 	public static final int APP_ID = 1;
 	// 平台：1：Android ； 2：ios ； 3：web

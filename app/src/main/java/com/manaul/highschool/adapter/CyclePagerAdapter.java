@@ -52,7 +52,6 @@ public class CyclePagerAdapter extends PagerAdapter {
         View view = View.inflate(mContext, R.layout.adapter_ad, null);
         final ImageView imageView = (ImageView) view.findViewById(R.id.image);
         final ADInfo ad = infoList.get(position % infoList.size());
-        Banner ad = infoList.get(position % infoList.size());
         if(ad != null && ad.getImageUtl() != null){
             AsyncImageLoader loader = new AsyncImageLoader(mContext);
             loader.setCache2File(true); //false

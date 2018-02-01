@@ -12,7 +12,6 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.manaul.highschool.bean.Banner;
 import com.manaul.highschool.loader.AsyncImageLoader;
@@ -24,7 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import c.b.BP;
+import cn.bmob.sms.exception.BmobException;
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
 
 @SuppressLint("HandlerLeak")
 public class MainActivity extends Activity {
@@ -149,28 +151,6 @@ public class MainActivity extends Activity {
 	public void onPause() {
 		super.onPause();
 		MobclickAgent.onPause(this);
-	}
-
-	/**
-	 * 缓存banner图
-	 */
-	public void cacheBannerHomePic(){
-		BmobQuery<Banner> query = new BmobQuery<Banner>();
-		query.order("-sort");
-		query.addWhereEqualTo("appId" , Constant.APP_ID);
-		query.addWhereEqualTo("type" , Constant.BANNER_TYPE_START);
-		query.findObjects(new FindListener<Banner>() {
-			@Override
-			public void done(List<Banner> object, BmobException e) {
-				if(e==null){
-					String jsonObject = JSONArray.toJSONString(object);
-					SharedPreferenceUtil.getInstance(mContext).setByStringKey("startBanners" , jsonObject);
-					startBannerList = object;
-				}else{
-					LoggerUtil.showLog("cacheBannerPic 失败："+e.getMessage()+","+e.getErrorCode());
-				}
-			}
-		});
 	}
 
 }

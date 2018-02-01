@@ -5,22 +5,15 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -34,7 +27,6 @@ import com.manaul.highschool.adapter.MyGridAdapterProject;
 import com.manaul.highschool.bean.ADInfo;
 import com.manaul.highschool.bean.AdPicture;
 import com.manaul.highschool.bean.DataOther;
-import com.manaul.highschool.bean.Banner;
 import com.manaul.highschool.bean.Project;
 import com.manaul.highschool.bean.UpdateApk;
 import com.manaul.highschool.bean.User;
@@ -45,15 +37,11 @@ import com.manaul.highschool.utils.Constant;
 import com.manaul.highschool.utils.DebugUtil;
 import com.manaul.highschool.utils.SPrefUtil;
 import com.manaul.highschool.utils.ToastUtils;
-import com.manaul.highschool.utils.LoggerUtil;
-import com.manaul.highschool.utils.SharedConfig;
-import com.manaul.highschool.utils.SharedPreferenceUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bmob.push.lib.util.LogUtil;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -252,8 +240,8 @@ public class NewHomeActivity extends AppCompatActivity {
         long validateLoginTime = SPrefUtil.getInstance(mContext).getLongByKey("validateLoginTime");
 
         // 验证登陆时间 1000 * 60 * 60 * 5
-        if (validateLoginTime == 0 || (System.currentTimeMillis() - validateLoginTime) > 1000) {
-//        if (validateLoginTime == 0 || (System.currentTimeMillis() - validateLoginTime) > 1000 * 60 * 60 * 5) {
+//        if (validateLoginTime == 0 || (System.currentTimeMillis() - validateLoginTime) > 1000) {
+        if (validateLoginTime == 0 || (System.currentTimeMillis() - validateLoginTime) > 1000 * 60 * 60 * 5) {
             vaildateLogin(); // 验证登陆
             writeSysConstants(); //  加载数据
             SPrefUtil.getInstance(mContext).setLongByKey("validateLoginTime", System.currentTimeMillis());

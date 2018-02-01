@@ -186,8 +186,8 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 				if(string.contains("ueditor"))
 					imageUrlList.remove(string);
 			}
+			SPrefUtil.getInstance(mContext).setStringByKey("images", imageUrlList.toString());
 		}
-		SPrefUtil.getInstance(mContext).setStringByKey("images", images.toString());
 
 		mHandler = new Handler() {
 			public void handleMessage(Message msg) {
