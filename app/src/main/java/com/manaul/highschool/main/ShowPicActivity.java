@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.manaul.highschool.adapter.ImagePagerAdapter;
 import com.manaul.highschool.loader.AsyncImageLoader;
 import com.manaul.highschool.utils.Constant;
-import com.manaul.highschool.utils.SharedConfig;
+import com.manaul.highschool.utils.SPrefUtil;
 import com.manaul.highschool.view.ZoomImageView;
 import com.umeng.analytics.MobclickAgent;
 
@@ -40,8 +40,6 @@ public class ShowPicActivity extends AppCompatActivity {
 
 	private TextView tvTitle ;
 	
-	private SharedPreferences shareConfig;
-	
 	@SuppressWarnings("deprecation")
 	@SuppressLint("InlinedApi")
 	@Override
@@ -50,11 +48,9 @@ public class ShowPicActivity extends AppCompatActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_show_pic);
 		mContext = this;
-		shareConfig = new SharedConfig(mContext).getConfig();
-		
-		
+
 		ArrayList<String> imgUrlArray = new ArrayList<String>();
-		String images = shareConfig.getString("images", null);
+		String images = SPrefUtil.getInstance(mContext).getStringByKey("images");
 		
 		images.substring(0, images.length() - 2);
 		String urlImg[] = images.split("&&");

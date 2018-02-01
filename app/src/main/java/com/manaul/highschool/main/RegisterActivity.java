@@ -20,9 +20,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.manaul.highschool.bean.User;
+import com.manaul.highschool.utils.DebugUtil;
 import com.manaul.highschool.utils.FormatCheckUtils;
 import com.manaul.highschool.utils.ProgressDialogUtils;
-import com.manaul.highschool.utils.SharedConfig;
+import com.manaul.highschool.utils.SPrefUtil;
 import com.manaul.highschool.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -33,7 +34,6 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
 public class RegisterActivity extends AppCompatActivity{
-	private SharedPreferences shareConfig;
 	private EditText mEmail; // 用户邮箱
 	private EditText mPwd; // 密码编辑
 	private EditText mPwdCheck; // 密码编辑
@@ -51,8 +51,6 @@ public class RegisterActivity extends AppCompatActivity{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.register);
 		mContext = this;
-		shareConfig = new SharedConfig(mContext).getConfig();
-
 		Intent intent = getIntent();
 		ActionBar mActionbar = getSupportActionBar();
 		if (mActionbar != null) {
@@ -123,15 +121,13 @@ public class RegisterActivity extends AppCompatActivity{
 		    public void done(User user, BmobException e) {
 		        if(e==null){
 		        	dialogUtils.hideDialog();
-		        	Editor editor = shareConfig.edit();
-					editor.putString("accessToken", user.getAccessToken());
-					editor.putLong("validateLoginTime", System.currentTimeMillis());
-					editor.commit();
+					SPrefUtil.getInstance(mContext).setStringByKey("accessToken", user.getAccessToken());
+					SPrefUtil.getInstance(mContext).setLongByKey("validateLoginTime", System.currentTimeMillis());
 					ToastUtils.showToastShort(mContext, "注册成功,已登陆");
 					finish();
 		        }else{
 		        	dialogUtils.hideDialog();
-		        	Log.e("22222", "register--"+e.getMessage());
+		        	DebugUtil.d("register--"+e.getMessage());
 		        }
 		    }
 		});

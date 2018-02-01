@@ -12,7 +12,10 @@ public class Constant {
 	public static final boolean IS_TEST = false;
 	
 	public static final String HOST_IMG = "http://118.89.46.74:8080/manaul/";
-
+	// appId : 1：高中生手册
+	public static final int APP_ID = 1;
+	// 平台：1：Android ； 2：ios ； 3：web
+	public static final int APP_PLATFORM = 1;
 	public static final String APP_TYPE = "gzxxsc";
 
 	public static final int DATABASE_VERSION = 1; // 数据库版
@@ -46,6 +49,11 @@ public class Constant {
 	
 	public static String WEI_XIN_PINGTAI = "";
 
+	/**
+	 * 获取版本号 string 
+	 * @param context
+	 * @return
+	 */
 	public static String getVersionName(Context context) {
 		String version = "";
 		try {
@@ -59,6 +67,11 @@ public class Constant {
 		return version;
 	}
 
+	/**
+	 * 获取版本号
+	 * @param context
+	 * @return
+	 */
 	public static int getVersionCode(Context context) {
 		int versionCode = 0;
 		try {
@@ -71,35 +84,4 @@ public class Constant {
 		}
 		return versionCode;
 	}
-
-	/**
-	 * 获取加密后的字符
-	 * 
-	 * @param pw
-	 * @return
-	 */
-	public static String stringMD5(String pw) {
-		try {
-			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-			byte[] inputByteArray = pw.getBytes();
-			messageDigest.update(inputByteArray);
-			byte[] resultByteArray = messageDigest.digest();
-			return byteArrayToHex(resultByteArray);
-		} catch (NoSuchAlgorithmException e) {
-		}
-		return null;
-	}
-
-	private static String byteArrayToHex(byte[] byteArray) {
-
-		char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-		char[] resultCharArray = new char[byteArray.length * 2];
-		int index = 0;
-		for (byte b : byteArray) {
-			resultCharArray[index++] = hexDigits[b >>> 4 & 0xf];
-			resultCharArray[index++] = hexDigits[b & 0xf];
-		}
-		return new String(resultCharArray);
-	}
-
 }

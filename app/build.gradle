@@ -49,4 +49,5 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.alibaba:fastjson:1.1.61.android'
     compile files('libs/BmobPay_v3.2.2_171019.jar')
+    compile files('libs/afinal_0.5.1_bin.jar')
 }

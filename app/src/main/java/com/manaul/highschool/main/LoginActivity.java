@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -20,9 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.manaul.highschool.bean.User;
+import com.manaul.highschool.utils.DebugUtil;
 import com.manaul.highschool.utils.FormatCheckUtils;
 import com.manaul.highschool.utils.ProgressDialogUtils;
-import com.manaul.highschool.utils.SharedConfig;
+import com.manaul.highschool.utils.SPrefUtil;
 import com.manaul.highschool.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -36,14 +35,9 @@ import cn.bmob.v3.listener.UpdateListener;
 
 public class LoginActivity extends AppCompatActivity implements OnClickListener {
 
-	private SharedPreferences shareConfig;
 	private EditText mAccount; // 用户名编
 	private EditText mPwd; // 密码编辑
-	private Button mLoginButton; // 登录按钮
-	private String topTitle;
 	private Context mContext;
-	private TextView login_forget_pwd;
-	private TextView login_register;
 
 	@TargetApi(Build.VERSION_CODES.KITKAT)
 	@SuppressLint("InlinedApi")
@@ -57,15 +51,13 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
 
 	void init() {
 		mContext = this;
-		shareConfig = new SharedConfig(mContext).getConfig();
 		User user = BmobUser.getCurrentUser(User.class);
 		if (user != null) {
 			finish();
 		}
 
 		Intent intent = getIntent();
-		topTitle = intent.getStringExtra("top_title");
-
+		String topTitle = intent.getStringExtra("top_title");
 		ActionBar mActionbar = getSupportActionBar();
 		mContext = this;
 		if (mActionbar != null) {
@@ -91,10 +83,10 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
 		mAccount = (EditText) findViewById(R.id.login_edit_account);
 		mPwd = (EditText) findViewById(R.id.login_edit_pwd);
 
-		mLoginButton = (Button) findViewById(R.id.login_btn_login);
+		Button mLoginButton = (Button) findViewById(R.id.login_btn_login);
 
-		login_forget_pwd = (TextView) findViewById(R.id.login_forget_pwd);
-		login_register = (TextView) findViewById(R.id.login_register);
+		TextView login_forget_pwd = (TextView) findViewById(R.id.login_forget_pwd);
+		TextView login_register = (TextView) findViewById(R.id.login_register);
 
 		login_forget_pwd.setOnClickListener(this); // 忘记密码
 		login_register.setOnClickListener(this); // 注册
@@ -136,20 +128,18 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
 						@Override
 						public void done(BmobException e) {
 							if(e!=null){
-								Log.e("22222", "update-token-"+e.getMessage());
+								DebugUtil.d("update-token-"+e.getMessage());
 							}
 						}
 					});
 					pDialogUtils.hideDialog();
-					Editor editor = shareConfig.edit();
-					editor.putLong("validateLoginTime", System.currentTimeMillis());
-					editor.commit();
+					SPrefUtil.getInstance(mContext).setLongByKey("validateLoginTime", System.currentTimeMillis());
 					ToastUtils.showToastShort(mContext, "登陆成功");
 					finish();
 				} else {
 					pDialogUtils.hideDialog();
 					ToastUtils.showToastShort(mContext, "用户名或密码错误");
-					Log.e("22222", "login--"+e.getMessage());
+					DebugUtil.d("login--"+e.getMessage());
 				}
 			}
 		});

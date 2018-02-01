@@ -27,7 +27,7 @@ import com.manaul.highschool.dao.ListItemShareDao;
 import com.manaul.highschool.dao.NavigateDao;
 import com.manaul.highschool.dao.SQLiteHelper;
 import com.manaul.highschool.utils.DataUtil;
-import com.manaul.highschool.utils.SharedConfig;
+import com.manaul.highschool.utils.SPrefUtil;
 import com.manaul.highschool.utils.ToastUtils;
 import com.manaul.highschool.view.LinkMovementMethodExt;
 import com.manaul.highschool.view.MessageSpan;
@@ -55,7 +55,6 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 	private ListItemShare itemShare = null;
 	private int parentId;
 	private int itemId;
-	private SharedPreferences shareConfig;
 	private Intent intent;
 	private Handler mHandler;
 	private Button back;
@@ -71,8 +70,10 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_screen_detail_page);
 		mContext = this;
+
 		sqliteHelper = new SQLiteHelper(getApplicationContext());
 		db = sqliteHelper.getWritableDatabase();
+
 		listItemShareDao = new ListItemShareDao(db);
 		navigateDao = new NavigateDao(db);
 
@@ -97,8 +98,6 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 				}
 			});
 		}
-
-		shareConfig = new SharedConfig(mContext).getConfig();
 
 		// 初始=
 		init();
@@ -191,10 +190,7 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 					images.append(string + "&&");
 			}
 		}
-
-		Editor editor = shareConfig.edit();
-		editor.putString("images", images.toString());
-		editor.commit();
+		SPrefUtil.getInstance(mContext).setStringByKey("images", images.toString());
 
 		mHandler = new Handler() {
 			public void handleMessage(Message msg) {

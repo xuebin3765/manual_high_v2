@@ -1,7 +1,9 @@
 package com.manaul.highschool.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +51,7 @@ public class CyclePagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View view = View.inflate(mContext, R.layout.adapter_ad, null);
         final ImageView imageView = (ImageView) view.findViewById(R.id.image);
-        ADInfo ad = infoList.get(position % infoList.size());
+        final ADInfo ad = infoList.get(position % infoList.size());
         if(ad != null && ad.getImageUtl() != null){
             AsyncImageLoader loader = new AsyncImageLoader(mContext);
             loader.setCache2File(true); //false
@@ -66,15 +68,23 @@ public class CyclePagerAdapter extends PagerAdapter {
                     }
                 }
             });
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(ad.getUrl() != null && ad.getUrl().length() > 5){
+                        Intent intent = new Intent();
+                        intent.setAction("android.intent.action.VIEW");
+                        Uri content_url = Uri.parse(ad.getUrl());
+                        intent.setData(content_url);
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+
         }else {
             imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_error));
         }
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                ToastUtils.showToastShort(mContext , "点击图片了");
-            }
-        });
+
         container.addView(view);
         return view;
     }

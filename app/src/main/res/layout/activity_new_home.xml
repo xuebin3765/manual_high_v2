@@ -243,6 +243,27 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/zfb_red_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/body_bai"
+                    android:padding="10dp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/zfb_red_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/body_bai"
+                    android:padding="10dp"
+                    android:paddingBottom="40dp"
+                    android:paddingTop="0dp"
+                    android:visibility="gone"/>
+
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>

@@ -1,19 +1,26 @@
 package com.manaul.highschool.main;
 
 import android.app.AlertDialog;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -26,6 +33,7 @@ import com.manaul.highschool.adapter.CyclePagerAdapter;
 import com.manaul.highschool.adapter.MyGridAdapterProject;
 import com.manaul.highschool.bean.ADInfo;
 import com.manaul.highschool.bean.AdPicture;
+import com.manaul.highschool.bean.DataOther;
 import com.manaul.highschool.bean.Project;
 import com.manaul.highschool.bean.UpdateApk;
 import com.manaul.highschool.bean.User;
@@ -33,7 +41,9 @@ import com.manaul.highschool.dao.NavigateDao;
 import com.manaul.highschool.dao.SQLiteHelper;
 import com.manaul.highschool.service.DownloadService;
 import com.manaul.highschool.utils.Constant;
-import com.manaul.highschool.utils.SharedConfig;
+import com.manaul.highschool.utils.DebugUtil;
+import com.manaul.highschool.utils.SPrefUtil;
+import com.manaul.highschool.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -55,11 +65,7 @@ public class NewHomeActivity extends AppCompatActivity {
 
     private Context mContext;
     private TextView tvTitle;
-
-    private long validateTime;
-    private long validateLoginTime;
     private User user;
-    private SharedPreferences shared;
 
     private SQLiteHelper sqliteHelper;
     private SQLiteDatabase db;
@@ -75,6 +81,9 @@ public class NewHomeActivity extends AppCompatActivity {
     private LinearLayout fg3_tool_03;
     private LinearLayout fg3_tool_04;
     private List<ADInfo> adInfoList = new ArrayList<>();
+
+    private TextView zfbRedTitle;
+    private TextView zfbRedText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,8 +130,7 @@ public class NewHomeActivity extends AppCompatActivity {
         dot_layout = (LinearLayout)findViewById(R.id.fg3_dot_layout);
 //        initData();
         // 初始化数据
-        shared = new SharedConfig(mContext).getConfig();
-        final String adInfo = shared.getString("adInfo" , null);
+        final String adInfo = SPrefUtil.getInstance(mContext).getStringByKey("adInfo");
 
         if(adInfoList.size() <= 0){
             if(adInfo != null){
@@ -146,12 +154,10 @@ public class NewHomeActivity extends AppCompatActivity {
                         if(e==null){
                             String jsonObject = JSONArray.toJSONString(object);
                             adInfoList = object;
-                            Log.i("bmob adInfo = " , jsonObject);
-                            SharedPreferences.Editor editor = shared.edit();
-                            editor.putString("adInfo" , jsonObject);
-                            editor.commit();
+                            DebugUtil.d("bmob adInfo = " +jsonObject);
+                            SPrefUtil.getInstance(mContext).setStringByKey("adInfo" , jsonObject);
                         }else{
-                            Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
+                            DebugUtil.d("bmob  失败："+e.getMessage()+","+e.getErrorCode());
                         }
                     }
                 });
@@ -206,30 +212,47 @@ public class NewHomeActivity extends AppCompatActivity {
         fg3_tool_03 = (LinearLayout) findViewById(R.id.fg3_tool_03);
         fg3_tool_04 = (LinearLayout) findViewById(R.id.fg3_tool_04);
 
+        // 加载支付宝领红包文字
+        zfbRedTitle = (TextView) findViewById(R.id.zfb_red_title);
+        zfbRedText = (TextView) findViewById(R.id.zfb_red_text);
+
+        String zfbText = SPrefUtil.getInstance(mContext).getStringByKey("zfbRedText");
+        String homeTitle = SPrefUtil.getInstance(mContext).getStringByKey("homeTitle");
+        if(zfbText != null && homeTitle != null){
+            zfbRedTitle.setVisibility(View.VISIBLE);
+            zfbRedText.setVisibility(View.VISIBLE);
+            zfbRedText.setText(zfbText);
+            zfbRedTitle.setText(homeTitle);
+            zfbRedText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    // 将文本内容放到系统剪贴板里。
+                    cm.setText(zfbRedText.getText());
+                    ToastUtils.showToastShort(mContext , "复制成功，去支付宝领取");
+                }
+            });
+        }
 
     }
 
     private void validate(Context mContext) {
         user = BmobUser.getCurrentUser(User.class);
 
-        shared = new SharedConfig(mContext).getConfig();
-        validateTime = shared.getLong("validateTime", 0);
-        validateLoginTime = shared.getLong("validateLoginTime", 0);
+        long validateTime = SPrefUtil.getInstance(mContext).getLongByKey("validateTime");
+        long validateLoginTime = SPrefUtil.getInstance(mContext).getLongByKey("validateLoginTime");
 
         // 验证登陆时间 1000 * 60 * 60 * 5
-        if (validateLoginTime == 0 || (System.currentTimeMillis() - validateLoginTime) > 1000 * 60 * 60 * 5) {
-            vaildateLogin(); //
-            writeSysConstants(); //
-            SharedPreferences.Editor editor = shared.edit();
-            editor.putLong("validateLoginTime", System.currentTimeMillis());
-            editor.commit();
+        if (validateLoginTime == 0 || (System.currentTimeMillis() - validateLoginTime) > 1000) {
+//        if (validateLoginTime == 0 || (System.currentTimeMillis() - validateLoginTime) > 1000 * 60 * 60 * 5) {
+            vaildateLogin(); // 验证登陆
+            writeSysConstants(); //  加载数据
+            SPrefUtil.getInstance(mContext).setLongByKey("validateLoginTime", System.currentTimeMillis());
         }
         // 验证登陆时间 1000 * 60 * 60 * 24
         if (validateTime == 0 || (System.currentTimeMillis() - validateTime) > 1000 * 60 * 60 * 24) {
-            checkUpdate(); //
-            SharedPreferences.Editor editor = shared.edit();
-            editor.putLong("validateTime", System.currentTimeMillis());
-            editor.commit();
+            checkUpdate(); // 检查更新
+            SPrefUtil.getInstance(mContext).setLongByKey("validateTime", System.currentTimeMillis());
         }
     }
 
@@ -238,7 +261,6 @@ public class NewHomeActivity extends AppCompatActivity {
         query.findObjects(new FindListener<UpdateApk>() {
             @Override
             public void done(List<UpdateApk> arg0, BmobException arg1) {
-
                 if (arg0 != null && arg0.size() > 0) {
                     final UpdateApk apk = arg0.get(0);
                     boolean update = false;
@@ -271,7 +293,42 @@ public class NewHomeActivity extends AppCompatActivity {
     }
 
     public void writeSysConstants() {
+        // 加载轮播图
+        initBanners();
+        // 加载常量数据
+        initConstant();
+        BmobQuery<AdPicture> bmobQuery = new BmobQuery<AdPicture>();
+        bmobQuery.findObjects(new FindListener<AdPicture>() {
+            @Override
+            public void done(List<AdPicture> object, BmobException e) {
+                if(e==null && object != null && object.size() > 0){
+                    DebugUtil.d(object.toString());
+                    AdPicture ad = object.get(0);
+                    SPrefUtil.getInstance(mContext).setStringByKey("spreadUrl" , ad.getUrl());
+                    SPrefUtil.getInstance(mContext).setStringByKey("spreadImageUrl" , ad.getImageUtl());
+                }
+            }
+        });
 
+    }
+
+    private void initConstant() {
+        BmobQuery<DataOther> bmobQuery = new BmobQuery<DataOther>();
+        bmobQuery.findObjects(new FindListener<DataOther>() {
+            @Override
+            public void done(List<DataOther> object, BmobException e) {
+                if(e==null && object != null && object.size() > 0){
+                    DebugUtil.d(object.toString());
+                    DataOther dataOther = object.get(0);
+                    SPrefUtil.getInstance(mContext).setStringByKey("homeTitle" , dataOther.getHomeTitle());
+                    SPrefUtil.getInstance(mContext).setStringByKey("zfbRedText" , dataOther.getZfbRedText());
+                    SPrefUtil.getInstance(mContext).setStringByKey("zfbRedUrl" , dataOther.getZfbRedUrl());
+                }
+            }
+        });
+    }
+
+    private void initBanners() {
         BmobQuery<ADInfo> query = new BmobQuery<ADInfo>();
         //查询的数据
         query.order("-sort");
@@ -279,29 +336,13 @@ public class NewHomeActivity extends AppCompatActivity {
         query.findObjects(new FindListener<ADInfo>() {
             @Override
             public void done(List<ADInfo> object, BmobException e) {
-            if(e==null){
-                String jsonObject = JSONArray.toJSONString(object);
-                adInfoList = object;
-                SharedPreferences.Editor editor = shared.edit();
-                editor.putString("adInfo" , jsonObject);
-                editor.commit();
-            }
-            }
-        });
-
-        BmobQuery<AdPicture> bmobQuery = new BmobQuery<AdPicture>();
-        bmobQuery.findObjects(new FindListener<AdPicture>() {
-            @Override
-            public void done(List<AdPicture> object, BmobException e) {
-                if(e==null && object != null && object.size() > 0){
-                    SharedPreferences.Editor editor = shared.edit();
-                    AdPicture ad = object.get(0);
-                    editor.putString("ad", ad.getUrl());
-                    editor.commit();
+                if(e==null){
+                    String jsonObject = JSONArray.toJSONString(object);
+                    adInfoList = object;
+                    SPrefUtil.getInstance(mContext).setStringByKey("adInfo" , jsonObject);
                 }
             }
         });
-
     }
 
     //初始化监听器，当页面改变时，更新其相应数据
@@ -348,7 +389,7 @@ public class NewHomeActivity extends AppCompatActivity {
     private Handler handler = new Handler(){
         public void handleMessage(android.os.Message msg){
             viewPager.setCurrentItem(viewPager.getCurrentItem()+1);
-            handler.sendEmptyMessageDelayed(0, 6000);
+            handler.sendEmptyMessageDelayed(0, 4000);
         }
     };
 
@@ -360,7 +401,7 @@ public class NewHomeActivity extends AppCompatActivity {
                 public void done(User object, BmobException e) {
                     if (e == null && object != null) {
                         if (!user.getAccessToken().equals(object.getAccessToken())) {
-                            new AlertDialog.Builder(mContext).setTitle("被迫下线")// ���öԻ������
+                            new AlertDialog.Builder(mContext).setTitle("被迫下线")//
                                     .setMessage("您的账户在其他设备登陆，您已被迫下线。请重新登陆或修改密码。")// ������ʾ������
                                     .setPositiveButton("重新登陆", new DialogInterface.OnClickListener() {// ���ȷ����ť
                                         @Override

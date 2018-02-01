@@ -7,6 +7,7 @@ public class AdPicture extends BmobObject{
 	private int type ; // 0：默认 ；1：web 
 	private String message;
 	private String name;
+	private String imageUtl;
 	
 	public String getName() {
 		return name;
@@ -32,5 +33,12 @@ public class AdPicture extends BmobObject{
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+
+	public String getImageUtl() {
+		return imageUtl;
+	}
+
+	public void setImageUtl(String imageUtl) {
+		this.imageUtl = imageUtl;
+	}
 }
