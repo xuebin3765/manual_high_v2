@@ -164,8 +164,6 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 		next = (Button) findViewById(R.id.next);
 		back.setOnClickListener(this);
 		next.setOnClickListener(this);
-		// // 初始化图片加载类
-		// initImageLoader(mContext);
 		// 展示数据
 		showData(itemContent);
 
@@ -181,13 +179,12 @@ public class ContentDetailActivity extends AppCompatActivity implements OnClickL
 		new TextViewFormHtmlUtil(itemCon.getTitle(), title, mContext).execute();
 		new TextViewFormHtmlUtil(itemCon.getContext(), content, mContext).execute();
 
-		ArrayList<String> imageUrlList = DataUtil.getImageSrc(itemCon.getContext());
+		List<String> imageUrlList = DataUtil.getImageSrc(itemCon.getContext());
 
-		StringBuffer images = new StringBuffer();
 		if (imageUrlList != null && imageUrlList.size() > 0) {
 			for (String string : imageUrlList) {
-				if (!string.contains("ueditor"))
-					images.append(string + "&&");
+				if(string.contains("ueditor"))
+					imageUrlList.remove(string);
 			}
 		}
 		SPrefUtil.getInstance(mContext).setStringByKey("images", images.toString());

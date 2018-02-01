@@ -39,7 +39,7 @@ public class ShowPicActivity extends AppCompatActivity {
 	private int presentImage = -1;
 
 	private TextView tvTitle ;
-	
+
 	@SuppressWarnings("deprecation")
 	@SuppressLint("InlinedApi")
 	@Override
@@ -61,11 +61,11 @@ public class ShowPicActivity extends AppCompatActivity {
 				}
 			}
 		}
-		
-		// 获得图片路径，处理路�??
+
+		// 获得图片路径，处理路径
 		Bundle bundle = getIntent().getExtras();
 		String imgUrl = bundle.getString("imgUrl");
-		// 当前的位�??
+		// 当前的位置
 		presentImage = imgUrlArray.indexOf("/"+imgUrl);
 		// 顶部返回按钮
 		ActionBar mActionbar = getSupportActionBar();

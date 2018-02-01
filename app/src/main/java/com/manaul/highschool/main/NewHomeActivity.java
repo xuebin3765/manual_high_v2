@@ -34,6 +34,7 @@ import com.manaul.highschool.adapter.MyGridAdapterProject;
 import com.manaul.highschool.bean.ADInfo;
 import com.manaul.highschool.bean.AdPicture;
 import com.manaul.highschool.bean.DataOther;
+import com.manaul.highschool.bean.Banner;
 import com.manaul.highschool.bean.Project;
 import com.manaul.highschool.bean.UpdateApk;
 import com.manaul.highschool.bean.User;
@@ -44,11 +45,15 @@ import com.manaul.highschool.utils.Constant;
 import com.manaul.highschool.utils.DebugUtil;
 import com.manaul.highschool.utils.SPrefUtil;
 import com.manaul.highschool.utils.ToastUtils;
+import com.manaul.highschool.utils.LoggerUtil;
+import com.manaul.highschool.utils.SharedConfig;
+import com.manaul.highschool.utils.SharedPreferenceUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.push.lib.util.LogUtil;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -106,20 +111,20 @@ public class NewHomeActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(mContext, ActivityMy.class);
-                    intent.putExtra("top_title", "个人主页");
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                Intent intent = new Intent(mContext, ActivityMy.class);
+                intent.putExtra("top_title", "个人主页");
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
                 }
             });
             mActionbar.getCustomView().findViewById(R.id.iv_home_setting).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ActivitySetting.class);
-                    intent.putExtra("top_title", "设置");
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                Intent intent = new Intent(mContext, ActivitySetting.class);
+                intent.putExtra("top_title", "设置");
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 }
             });
         }
@@ -236,6 +241,10 @@ public class NewHomeActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 验证相关信息
+     * @param mContext
+     */
     private void validate(Context mContext) {
         user = BmobUser.getCurrentUser(User.class);
 
@@ -426,6 +435,10 @@ public class NewHomeActivity extends AppCompatActivity {
             } else {
                 finish();
                 System.exit(0);
+//                Intent home = new Intent(Intent.ACTION_MAIN);
+//                home.addCategory(Intent.CATEGORY_HOME);
+//                startActivity(home);
+//                LoggerUtil.showLog("回到桌面，不退出");
             }
             return true;
         }

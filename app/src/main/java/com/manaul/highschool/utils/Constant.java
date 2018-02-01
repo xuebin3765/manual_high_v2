@@ -10,12 +10,18 @@ import java.security.NoSuchAlgorithmException;
 
 public class Constant {
 	public static final boolean IS_TEST = false;
-	
+	public static final boolean SHOW_LOG = true;
+	public static final int APP_ID = 1;
+	public static final int BANNER_TYPE_START = 1;
+	public static final int BANNER_TYPE_HOME = 2;
+
 	public static final String HOST_IMG = "http://118.89.46.74:8080/manaul/";
 	// appId : 1：高中生手册
 	public static final int APP_ID = 1;
 	// 平台：1：Android ； 2：ios ； 3：web
 	public static final int APP_PLATFORM = 1;
+	public static final String HOST_IMG = "http://ovb08chzs.bkt.clouddn.com/";
+
 	public static final String APP_TYPE = "gzxxsc";
 
 	public static final int DATABASE_VERSION = 1; // 数据库版
@@ -50,7 +56,7 @@ public class Constant {
 	public static String WEI_XIN_PINGTAI = "";
 
 	/**
-	 * 获取版本号 string 
+	 * 获取版本号 string
 	 * @param context
 	 * @return
 	 */

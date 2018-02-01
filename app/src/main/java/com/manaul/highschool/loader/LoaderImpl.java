@@ -95,7 +95,7 @@ public class LoaderImpl {
     public Bitmap getBitmapFromMemory(String url){  
         Bitmap bitmap = null;
         if(imageCache.containsKey(url)){  
-        	Log.e("22222", " 从内存缓存文件读�?      ");
+        	Log.e("22222", " 从内存缓存文件读");
             synchronized(imageCache){  
                 SoftReference<Bitmap> bitmapRef = imageCache.get(url);  
                 if(bitmapRef != null){  

@@ -2,6 +2,9 @@ package com.manaul.highschool.bean;
 
 import cn.bmob.v3.BmobObject;
 
+/**
+ * 启动图
+ */
 public class AdPicture extends BmobObject{
 	private String url;
 	private int type ; // 0：默认 ；1：web 
