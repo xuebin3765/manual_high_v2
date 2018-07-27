@@ -82,40 +82,12 @@ public class NewHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_home);
-        ActionBar mActionbar = getSupportActionBar();
+
         mContext = this;
 
         initView();
 
         validate(mContext); // 验证各种数据
-        if (mActionbar != null) {
-            mActionbar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            mActionbar.setDisplayShowCustomEnabled(true);
-            mActionbar.setCustomView(R.layout.title_to_center_home);
-            tvTitle = (TextView) mActionbar.getCustomView().findViewById(R.id.title_to_center_text);
-            tvTitle.setText(mContext.getResources().getString(R.string.app_name));
-
-            mActionbar.getCustomView().findViewById(R.id.iv_home_user).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                Intent intent = new Intent(mContext, ActivityMy.class);
-                intent.putExtra("top_title", "个人主页");
-                startActivity(intent);
-                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-
-                }
-            });
-            mActionbar.getCustomView().findViewById(R.id.iv_home_setting).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                Intent intent = new Intent(mContext, ActivitySetting.class);
-                intent.putExtra("top_title", "设置");
-                startActivity(intent);
-                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                }
-            });
-        }
 
         // 初始化页面
         viewPager = (ViewPager)findViewById(R.id.fg3_viewpager);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2f4050</color>
-    <color name="colorPrimaryDark">#2f4050</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="layout_top_no">#009966</color>
@@ -22,9 +22,21 @@
     <color name="reday_bg">#f1e5c9</color>
     <color name="title_coler_black">#000000</color><!-- 文字颜色 -->
     <color name="title_top">#2f4050</color><!-- 导航背景颜色 -->
+    <!--<color name="title_top">#ffffff</color>&lt;!&ndash; 导航背景颜色 &ndash;&gt;-->
     <color name="lightgrey">#ffd3d3d3</color>
     <color name="content_message">#666666</color>
     <color name="text_coler_black">#676a6c</color><!-- 文字颜色 -->
 
     <color name="text_coler_01">#FF9966</color><!-- 文字颜色 -->
+
+    <color name="teal">#00796B</color>
+    <color name="brown">#8D6E63</color>
+    <color name="blue">#2196F3</color>
+    <color name="red">#FF0000</color>
+    <color name="grey">#607D8B</color>
+    <color name="orange">#F57C00</color>
+
+    <color name="icon_color">#2196F3</color>
+
+
 </resources>

@@ -110,4 +110,7 @@
     <item type="id" name="activity_item_lin_zsd">false</item>
     <item type="id" name="activity_item_lin_tiku">false</item>
 
+    <item name="fab_expand_menu_button" type="id"/>
+    <item name="fab_label" type="id"/>
+
 </resources>

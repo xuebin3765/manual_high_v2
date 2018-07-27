@@ -97,5 +97,82 @@
     <string name="zhifubao">支付宝</string>
     <string name="weixin">微信</string>
 
+    <string name="github">Github</string>
+    <string name="mode_fixed">MODE_FIXED</string>
+    <string name="mode_shifting">MODE_SHIFTING</string>
+
+    <string name="bs_static">BS_STATIC</string>
+    <string name="bs_ripple">BS_RIPPLE</string>
+    <string name="show_text">Show Text</string>
+    <string name="_3_items">3 items</string>
+    <string name="_4_items">4 items</string>
+    <string name="_5_items">5 items</string>
+    <string name="auto_hide_badge">Auto hide badge</string>
+    <string name="toggle_hide">Toggle Hide</string>
+    <string name="toggle_badge">Toggle Badge</string>
+
+    <string name="para1">1. one\n\n
+        为人在世，一个 “ 笑 ” 字。 \n\n
+        笑对名誉，不争； \n\n
+        笑对邪财，不取； \n\n
+        笑对生活，不求； \n\n
+        笑对波折，不恼； \n\n
+        笑对权贵，不卑； \n\n
+        笑对人生，无拘； \n\n
+        笑对得失，无忧。.\n\n</string>
+    <string name="para2">2. two\n\n人生有两大欢乐。   \n\n
+
+        一是拥有后细细的品味；  \n\n
+
+        二是追求之中倍感无比充实。    \n\n
+
+        有些人为了享乐而苦了一生，有些人为了休息却忙了一生。人们总是在不停地追求美好，却往往错过了当下的美好，要记住：贪婪是最真实的贫穷，满足是最真实的财富！ \n\n</string>
+    <string name="para3">3.three\n\n人生幸福三诀。\n\n
+
+        （1） 不要拿自己的错误来惩罚自己；\n\n
+
+        （2） 不要拿自己的错误来惩罚别人；  \n\n
+
+        （3） 不要拿别人的错误来惩罚自己。   \n\n
+
+        人有三样东西是无法隐瞒的：咳嗽、贫穷和爱，你想隐瞒，却欲盖弥彰。       \n\n
+
+        人有三样东西是不该挥霍的：身体、金钱和爱，你想挥霍，却得不偿失。\n\n
+
+        人有三样东西是无法挽留的：生命、时间和爱，你想挽留，却渐行渐远。\n\n</string>
+    <string name="para4">4.four\n\n人生四大境界： \n\n
+
+        （1） 自律境界：无功不受大禄，无助不受大礼，无胆不挣大钱。  \n\n
+
+        （2） 生活境界：常与高人交往，闲与雅人相会，乐与亲人分享。   \n\n
+
+        （3） 事业境界：尽心负责无憾，养家小康无忧，自己开心无悔。   \n\n
+
+        （4） 感情境界：风流别下流，喜新别厌旧，互帮别拖后。\n\n</string>
+    <string name="para5">5.five\n\n人生五耐    \n\n
+
+        （1） 耐冷： 事态炎凉，要随遇而安，坦然处之。    \n\n
+
+        （2） 耐苦： 面对苦难百折不挠，终有云开日现的时候。\n\n
+
+        (3) 耐燥： 面对浮躁心静如水，不为钱权利所诱所累，笑看云卷云舒。     \n\n
+
+        (4) 耐烦： 宰相肚里能撑船，他人气我我不气。        \n\n
+
+        (5) 耐忙： 潇洒自然，活跃思维，享受忙碌。\n\n</string>
+    <string name="para6">5.six\n\n人生经典六句话          \n\n
+
+        （1） 容易走的都是下坡路。                  \n\n
+
+        （2） 自由不是想干什么就干什么，而是想不干什么就不干什么。     \n\n
+
+        （3） 命，乃失败者借口；运，乃成功者的谦词。      \n\n
+
+        （4） 打动人心的最佳方法，是谈他最珍爱的东西。        \n\n
+
+        （5） 品格不由你占有的东西决定，而是由你匮乏的东西塑造的。    \n\n
+
+        （6） 郁闷时，坐下来犒劳自已，原谅别人，也放过自己。  \n\n</string>
+
 
 </resources>

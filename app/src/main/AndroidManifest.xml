@@ -53,6 +53,8 @@
         <activity android:name=".VipActivity" />
         <activity android:name=".ActivityAboutMe" />
         <activity android:name=".ActivityVideo" />
+        <activity android:name=".HomeActivityV2"/>
+        <activity android:name=".HomeActivity"/>
 
         <!-- 支付免责  activity -->
         <activity android:name="cn.bmob.pay.v3.act.PayAct" />

@@ -122,7 +122,7 @@ public class MainActivity extends Activity {
 			// if (isFirst) {
 			// intent = new Intent(this, WelcomeActivity.class);
 			// } else {
-			intent = new Intent(this, NewHomeActivity.class);
+			intent = new Intent(this, HomeActivityV2.class);
 			// }
 			startActivity(intent);
 			finish();
