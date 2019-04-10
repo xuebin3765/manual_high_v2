@@ -11,8 +11,6 @@ import java.security.NoSuchAlgorithmException;
 public class Constant {
 	public static final boolean IS_TEST = false;
 	public static final boolean SHOW_LOG = true;
-	public static final int BANNER_TYPE_START = 1;
-	public static final int BANNER_TYPE_HOME = 2;
 
 	// appId : 1：高中生手册
 	public static final int APP_ID = 1;
@@ -42,16 +40,6 @@ public class Constant {
 	public static final double MONWEY_90 = 15;
 	public static final double MONWEY_180 = 25;
 	public static final double MONWEY_NEVER = 45;
-
-
-	public static String QQ_APPID = "1106085721";
-	public static String QQ_APP_KEY = "C6TO0qA7Z4aAgbAT";
-	
-	public static String QQ_GDT_AD_ID_BANNER = "5040429255163790";
-	public static String QQ_GDT_AD_ID_CHAPING = "4050822285069761";
-	public static String QQ_GDT_AD_ID_KAIPING = "2010027225460703";
-	
-	public static String WEI_XIN_PINGTAI = "";
 
 	/**
 	 * 获取版本号 string

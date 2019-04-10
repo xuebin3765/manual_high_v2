@@ -53,31 +53,7 @@
         <activity android:name=".VipActivity" />
         <activity android:name=".ActivityAboutMe" />
         <activity android:name=".ActivityVideo" />
-        <activity android:name=".HomeActivityV2"/>
         <activity android:name=".HomeActivity"/>
-
-        <!-- 支付免责  activity -->
-        <activity android:name="cn.bmob.pay.v3.act.PayAct" />
-        <activity
-            android:name="c.b.a.A"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:exported="false"
-            android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name="c.b.a.B"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" />
-
-        <!-- 替换为在友盟后台申请的应用Appkey -->
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="591a5a72c8957627d0000848" >
-        </meta-data>
-        <!-- 应用的推广渠道名称，Channel ID自定义 -->
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:value="Channel ID" />
     </application>
 
 </manifest>

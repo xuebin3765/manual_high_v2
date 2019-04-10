@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.manaul.highschool.adapter.GridViewAdapter;
 import com.manaul.highschool.adapter.ViewPagerAdapter;
 import com.manaul.highschool.bean.Subject;
 import com.manaul.highschool.main.R;
+import com.manaul.highschool.utils.ReadFileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,14 +43,24 @@ public class FragmentHome extends Fragment {
     private int currentIndex;
 
     @Override
+    public void onResume() {
+        Log.d("into", "into onResume");
+        super.onResume();
+    }
+
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d("into", "into onCreateView");
+        System.out.println("into onCreateView");
         View view = inflater.inflate(R.layout.activity_center_home , container , false);
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         ll_dot = (LinearLayout) view.findViewById(R.id.ll_dot);
-        subjectList = new ArrayList<>();
-        for (String title : titles) {
-            subjectList.add(new Subject(title, R.drawable.setting_normal));
-        }
+        String jsonStr = ReadFileUtil.getJson(getContext(), "manual_project.json");
+        Log.d("jsonStr", jsonStr);
+        subjectList = ReadFileUtil.readJsonToObjectList(jsonStr, Subject.class);
+
         //需要的页面数
         int pageCount = (int) Math.ceil(subjectList.size() * 1.0 / pageSize);
         List<View> viewList = new ArrayList<>();

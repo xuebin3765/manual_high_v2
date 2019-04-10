@@ -32,11 +32,11 @@ public class AsyncImageLoader {
      */  
     public interface ImageCallback{  
         /** 
-         * 回调函数 
-         * @param bitmap: may be null! 
-         * @param imageUrl  
+         * 回调函数
+         * @param bitmap: may be null!
+         * @param imageUrl
          */  
-        public void onImageLoaded(Bitmap bitmap, String imageUrl);  
+        public void onImageLoaded(Bitmap bitmap, String imageUrl);
     }
       
     static{  

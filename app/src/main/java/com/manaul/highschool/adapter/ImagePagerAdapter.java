@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-// ����ҳ��ʹ�õ�pageview����??
+//
 public class ImagePagerAdapter extends PagerAdapter {
 
 	private List<ImageView> views = new ArrayList<ImageView>();

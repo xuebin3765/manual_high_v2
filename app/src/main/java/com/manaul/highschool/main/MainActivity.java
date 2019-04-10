@@ -12,7 +12,6 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONArray;
 import com.manaul.highschool.bean.Banner;
 import com.manaul.highschool.loader.AsyncImageLoader;
 import com.manaul.highschool.utils.Constant;
@@ -22,11 +21,7 @@ import com.umeng.analytics.MobclickAgent;
 import java.util.ArrayList;
 import java.util.List;
 
-import c.b.BP;
-import cn.bmob.sms.exception.BmobException;
 import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.listener.FindListener;
 
 @SuppressLint("HandlerLeak")
 public class MainActivity extends Activity {
@@ -49,8 +44,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.welcome);
 		// bmob 初始化
 		Bmob.initialize(mContext, Constant.BMOB_APKID);
-		// bmob 支付初始化
-		BP.init(Constant.BMOB_APKID);
 		// 数据库初始化
 		initDataDb();
 		// 初始化控件对象
@@ -122,7 +115,7 @@ public class MainActivity extends Activity {
 			// if (isFirst) {
 			// intent = new Intent(this, WelcomeActivity.class);
 			// } else {
-			intent = new Intent(this, HomeActivityV2.class);
+			intent = new Intent(this, HomeActivity.class);
 			// }
 			startActivity(intent);
 			finish();

@@ -2,6 +2,9 @@ package com.manaul.highschool.adapter;
 
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import java.util.List;
  */
 
 public class GridViewAdapter extends BaseAdapter {
+    private Context mContext;
     private List<Subject> subjectList;
 
     private LayoutInflater layoutInflater;
@@ -30,6 +34,7 @@ public class GridViewAdapter extends BaseAdapter {
     private int pageSize;
 
     public GridViewAdapter(Context context, List<Subject> subjectList, int currentIndex, int pageSize) {
+        this.mContext = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.subjectList = subjectList;
         this.currentIndex = currentIndex;
@@ -72,7 +77,13 @@ public class GridViewAdapter extends BaseAdapter {
         }
         int pos = position + currentIndex * pageSize;
         viewHolder.tv_subject.setText(subjectList.get(pos).getName());
-        viewHolder.iv_subject.setImageResource(subjectList.get(pos).getIcon());
+        Resources res= mContext.getResources();
+        Log.e("test", subjectList.get(pos).getName()+" == "+subjectList.get(pos).getIcon());
+        int resId = res.getIdentifier(subjectList.get(pos).getIcon(), "drawable", mContext.getPackageName());
+        Log.e("test", resId+""+mContext.getPackageName());
+//        Drawable drawable=res.getDrawable(resId);
+//        viewHolder.iv_subject.setImageDrawable(drawable);
+        viewHolder.iv_subject.setImageResource(resId);
         return convertView;
     }
 

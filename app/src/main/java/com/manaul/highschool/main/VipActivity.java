@@ -3,7 +3,6 @@ package com.manaul.highschool.main;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,18 +29,13 @@ import android.widget.Toast;
 import com.manaul.highschool.bean.User;
 import com.manaul.highschool.utils.Constant;
 import com.manaul.highschool.utils.DataUtil;
-import com.manaul.highschool.utils.ToastUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Date;
 
-import c.b.BP;
-import c.b.PListener;
 import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.UpdateListener;
 
 public class VipActivity extends AppCompatActivity implements OnClickListener {
 
@@ -119,9 +113,6 @@ public class VipActivity extends AppCompatActivity implements OnClickListener {
 		login.setClickable(false);
 		loginTitle = (TextView) findViewById(R.id.my_login_title);
 		loginText = (TextView) findViewById(R.id.my_login_text);
-
-
-
 		user = BmobUser.getCurrentUser(User.class);
 		
 		if (user == null) {
@@ -290,117 +281,6 @@ public class VipActivity extends AppCompatActivity implements OnClickListener {
 	 *            支付类型，true为支付宝支付,false为微信支付
 	 */
 	void pay(final boolean alipayOrWechatPay) {
-		if (alipayOrWechatPay) {
-			if (!checkPackageInstalled("com.eg.android.AlipayGphone", "https://www.alipay.com")) { // 支付宝支付要求用户已经安装支付宝客户端
-				Toast.makeText(mContext, "请安装支付宝客户端", Toast.LENGTH_SHORT).show();
-				return;
-			}
-		} else {
-
-			if (checkPackageInstalled("com.tencent.mm", "http://weixin.qq.com")) {// 需要用微信支付时，要安装微信客户端，然后需要插件
-				// 有微信客户端，看看有无微信支付插件，170602更新了插件，这里可检查可不检查
-				if (!BP.isAppUpToDate(this, "cn.bmob.knowledge", 8)){
-					Toast.makeText(
-							mContext,
-							"监测到本机的支付插件不是最新版,最好进行更新,请先更新插件(无流量消耗)",
-							Toast.LENGTH_SHORT).show();
-					installApk("bp.db");
-					return;
-				}
-			} else {// 没有安装微信
-				Toast.makeText(mContext, "请安装微信客户端", Toast.LENGTH_SHORT).show();
-				return;
-			}
-		}
-
-		showDialog("正在获取订单...");
-
-		try {
-			Intent intent = new Intent(Intent.ACTION_MAIN);
-			intent.addCategory(Intent.CATEGORY_LAUNCHER);
-			ComponentName cn = new ComponentName("com.bmob.app.sport","com.bmob.app.sport.wxapi.BmobActivity");
-			intent.setComponent(cn);
-			this.startActivity(intent);
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		String message = "您（"+user.getUsername()+"）将"+title;
-		BP.pay(title, message , price , alipayOrWechatPay, new PListener() {
-			// 因为网络等原因,支付结果未知(小概率事件),出于保险起见稍后手动查询
-			@Override
-			public void unknow() {
-				ToastUtils.showToastShort(mContext , "支付结果未知,请稍后手动查询或联系客服！");
-			}
-
-			// 支付成功,如果金额较大请手动查询确认
-			@Override
-			public void succeed() {
-				if(user == null) user = BmobUser.getCurrentUser(User.class);
-				int day = 0;
-				switch (type){
-					case 1:
-						day = 30;
-						break;
-					case 2:
-						day = 90;
-						break;
-					case 3:
-						day = 180;
-						break;
-					case 4:
-						day = 3000;
-						break;
-				}
-				// 未过期
-				if(DataUtil.vipIsEnd(user.getVipEnd())){
-					user.setVipEnd(DataUtil.getAfterTimeLong(new Date(user.getVipEnd()) , day));
-					ToastUtils.showToastShort(mContext , DataUtil.getCurrentTime(new Date(user.getVipEnd())));
-				}else {
-					user.setVipEnd(DataUtil.getAfterTimeLong(new Date() , day));
-				}
-
-				User newUser = new User();
-				newUser.setVipEnd(user.getVipEnd());
-				newUser.update(user.getObjectId(),new UpdateListener() {
-					@Override
-					public void done(BmobException e) {
-						hideDialog();
-						if(e==null){
-							ToastUtils.showToastShort(mContext , "激活成功");
-						}else{
-							ToastUtils.showToastShort(mContext , "激活失败，如已付款请联系客服");
-						}
-					}
-				});
-			}
-
-			// 无论成功与否,返回订单号
-			@Override
-			public void orderId(String orderId) {
-				// 此处应该保存订单号,比如保存进数据库等,以便以后查询
-				showDialog("获取订单成功!请等待跳转到支付页面~");
-			}
-
-			// 支付失败,原因可能是用户中断支付操作,也可能是网络原因
-			@Override
-			public void fail(int code, String reason) {
-				// 当code为-2,意味着用户中断了操作
-				// code为-3意味着没有安装BmobPlugin插件
-				if (code == -3) {
-					Toast.makeText(mContext, "监测到你尚未安装支付插件,无法进行支付,请先安装插件(已打包在本地,无流量消耗),安装结束后重新支付", Toast.LENGTH_SHORT)
-							.show();
-					// installBmobPayPlugin("bp.db");
-					installApk("bp.db");
-				} else if (code == -2) {
-					Toast.makeText(mContext, "取消支付", Toast.LENGTH_SHORT).show();
-				}else {
-					Toast.makeText(mContext, "支付取消", Toast.LENGTH_SHORT).show();
-
-				}
-
-				hideDialog();
-			}
-		});
 	}
 
 	private static final int REQUESTPERMISSION = 101;
