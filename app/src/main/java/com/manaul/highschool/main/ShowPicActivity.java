@@ -104,7 +104,7 @@ public class ShowPicActivity extends AppCompatActivity {
 				
 				// --------------------------- 
 				//网络图片地址  
-				url = Constant.HOST_IMG + url.substring(1);
+				url = Constant.HOST_IMG + "image/" + url.substring(1);
 		        AsyncImageLoader loader = new AsyncImageLoader(mContext);
 		        loader.setCache2File(true); //false  
 		        loader.setCachedDir(mContext.getCacheDir().getAbsolutePath());  

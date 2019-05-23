@@ -79,22 +79,6 @@
     <item type="id" name="layout_gird_item_text_tiku">false</item>
     <item type="id" name="layout_gird_item_text_video">false</item>
 
-    <item type="id" name="fg3_tool">false</item>
-    <item type="id" name="fg3_tool_01">false</item>
-    <item type="id" name="fg3_tool_02">false</item>
-    <item type="id" name="fg3_tool_03">false</item>
-    <item type="id" name="fg3_tool_04">false</item>
-
-    <item type="id" name="fg3_tool_text_01">false</item>
-    <item type="id" name="fg3_tool_text_02">false</item>
-    <item type="id" name="fg3_tool_text_03">false</item>
-    <item type="id" name="fg3_tool_text_04">false</item>
-
-    <item type="id" name="fg3_tool_img_01">false</item>
-    <item type="id" name="fg3_tool_img_02">false</item>
-    <item type="id" name="fg3_tool_img_03">false</item>
-    <item type="id" name="fg3_tool_img_04">false</item>
-
     <item type="id" name="fg3_linear_news">false</item>
 
     <item type="id" name="fg3_linear_bk">false</item>

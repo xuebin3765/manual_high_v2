@@ -27,7 +27,7 @@ public class MImageGetter implements ImageGetter {
 	public Drawable getDrawable(String source) {
 		final UrlDrawable urlDrawable = new UrlDrawable();
 		// 网络图片地址
-		source = Constant.HOST_IMG + source;
+		source = Constant.HOST_IMG +"/image/"+ source;
 		AsyncImageLoader loader = new AsyncImageLoader(mContext);
 		loader.setCache2File(true);
 		loader.setCachedDir(mContext.getCacheDir().getAbsolutePath());

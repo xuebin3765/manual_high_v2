@@ -57,8 +57,6 @@ import cn.bmob.v3.listener.QueryListener;
 public class NewHomeActivity extends AppCompatActivity {
 
     private Context mContext;
-    private TextView tvTitle;
-    private User user;
 
     private SQLiteHelper sqliteHelper;
     private SQLiteDatabase db;
@@ -68,11 +66,7 @@ public class NewHomeActivity extends AppCompatActivity {
     private TextView tv_intro;
     private LinearLayout dot_layout;
     private LinearLayout fg3_lin_bk;
-    private LinearLayout fg3_tool;
-    private LinearLayout fg3_tool_01;
-    private LinearLayout fg3_tool_02;
-    private LinearLayout fg3_tool_03;
-    private LinearLayout fg3_tool_04;
+
     private List<ADInfo> adInfoList = new ArrayList<>();
 
     private TextView zfbRedTitle;
@@ -86,8 +80,6 @@ public class NewHomeActivity extends AppCompatActivity {
         mContext = this;
 
         initView();
-
-        validate(mContext); // 验证各种数据
 
         // 初始化页面
         viewPager = (ViewPager)findViewById(R.id.fg3_viewpager);
@@ -169,13 +161,6 @@ public class NewHomeActivity extends AppCompatActivity {
 
         // 加载备考模块
         fg3_lin_bk = (LinearLayout) findViewById(R.id.fg3_linear_bk);
-        // 工具
-        fg3_tool = (LinearLayout) findViewById(R.id.fg3_tool);
-        //
-        fg3_tool_01 = (LinearLayout) findViewById(R.id.fg3_tool_01);
-        fg3_tool_02 = (LinearLayout) findViewById(R.id.fg3_tool_02);
-        fg3_tool_03 = (LinearLayout) findViewById(R.id.fg3_tool_03);
-        fg3_tool_04 = (LinearLayout) findViewById(R.id.fg3_tool_04);
 
         // 加载支付宝领红包文字
         zfbRedTitle = (TextView) findViewById(R.id.zfb_red_title);
@@ -199,30 +184,6 @@ public class NewHomeActivity extends AppCompatActivity {
             });
         }
 
-    }
-
-    /**
-     * 验证相关信息
-     * @param mContext
-     */
-    private void validate(Context mContext) {
-        user = BmobUser.getCurrentUser(User.class);
-
-        long validateTime = SPrefUtil.getInstance(mContext).getLongByKey("validateTime");
-        long validateLoginTime = SPrefUtil.getInstance(mContext).getLongByKey("validateLoginTime");
-
-        // 验证登陆时间 1000 * 60 * 60 * 5
-//        if (validateLoginTime == 0 || (System.currentTimeMillis() - validateLoginTime) > 1000) {
-        if (validateLoginTime == 0 || (System.currentTimeMillis() - validateLoginTime) > 1000 * 60 * 60 * 5) {
-            vaildateLogin(); // 验证登陆
-            writeSysConstants(); //  加载数据
-            SPrefUtil.getInstance(mContext).setLongByKey("validateLoginTime", System.currentTimeMillis());
-        }
-        // 验证登陆时间 1000 * 60 * 60 * 24
-        if (validateTime == 0 || (System.currentTimeMillis() - validateTime) > 1000 * 60 * 60 * 24) {
-            checkUpdate(); // 检查更新
-            SPrefUtil.getInstance(mContext).setLongByKey("validateTime", System.currentTimeMillis());
-        }
     }
 
     protected void checkUpdate() {
@@ -362,28 +323,7 @@ public class NewHomeActivity extends AppCompatActivity {
         }
     };
 
-    private void vaildateLogin() {
-        if (user != null) {
-            BmobQuery<User> bmobQuery = new BmobQuery<User>();
-            bmobQuery.getObject(user.getObjectId(), new QueryListener<User>() {
-                @Override
-                public void done(User object, BmobException e) {
-                    if (e == null && object != null) {
-                        if (!user.getAccessToken().equals(object.getAccessToken())) {
-                            new AlertDialog.Builder(mContext).setTitle("被迫下线")//
-                                    .setMessage("您的账户在其他设备登陆，您已被迫下线。请重新登陆或修改密码。")// ������ʾ������
-                                    .setPositiveButton("重新登陆", new DialogInterface.OnClickListener() {// ���ȷ����ť
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            User.logOut();
-                                        }
-                                    }).show();
-                        }
-                    }
-                }
-            });
-        }
-    }
+
 
     private long exitTime = 0;
     @Override

@@ -5,8 +5,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class Constant {
 	public static final boolean IS_TEST = false;
@@ -16,7 +14,7 @@ public class Constant {
 	public static final int APP_ID = 1;
 	// 平台：1：Android ； 2：ios ； 3：web
 	public static final int APP_PLATFORM = 1;
-	public static final String HOST_IMG = "http://ovb08chzs.bkt.clouddn.com/";
+	public static final String HOST_IMG = "http://www.xuebin123.com/";
 
 	public static final String APP_TYPE = "gzxxsc";
 
